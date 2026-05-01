@@ -3,6 +3,7 @@
 React application built as part of RS School React course.
 
 ## Stack
+
 - React + TypeScript
 - Vite
 - ESLint + Prettier + Husky
