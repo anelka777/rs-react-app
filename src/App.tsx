@@ -16,7 +16,7 @@ class App extends React.Component<object, AppState> {
     super(props);
     this.state = {
       pokemons: [],
-      isLoading: false,
+      isLoading: true,
       error: null,
     };
   }
