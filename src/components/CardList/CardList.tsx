@@ -1,5 +1,7 @@
 import React from 'react';
 import type { Pokemon } from '../../types/pokemon';
+import Card from '../Card/Card';
+import './CardList.css';
 
 interface CardListProps {
   pokemons: Pokemon[];
@@ -13,9 +15,9 @@ class CardList extends React.Component<CardListProps> {
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
     return (
-      <div>
+      <div className="card-list">
         {pokemons.map((pokemon) => (
-          <div key={pokemon.id}>{pokemon.name}</div>
+          <Card key={pokemon.id} pokemon={pokemon} />
         ))}
       </div>
     );
