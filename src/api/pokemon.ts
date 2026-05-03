@@ -5,7 +5,7 @@ const BASE_URL = 'https://pokeapi.co/api/v2';
 export const fetchPokemons = async (searchTerm: string): Promise<Pokemon[]> => {
   if (searchTerm) {
     const response = await fetch(
-      `${BASE_URL}/pokemon/${searchTerm.toLowerCase().trim()}`
+      `${BASE_URL}/pokemon/${searchTerm.toLowerCase()}`
     );
     if (!response.ok) {
       throw new Error(`Error: ${response.status}`);

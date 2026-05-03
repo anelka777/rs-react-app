@@ -7,6 +7,7 @@ interface SearchProps {
 
 interface SearchState {
   searchTerm: string;
+  lastSearchTerm: string;
 }
 
 class Search extends React.Component<SearchProps, SearchState> {
@@ -14,6 +15,7 @@ class Search extends React.Component<SearchProps, SearchState> {
     super(props);
     this.state = {
       searchTerm: localStorage.getItem('searchTerm') || '',
+      lastSearchTerm: localStorage.getItem('searchTerm') || '',
     };
   }
 
@@ -23,8 +25,10 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   handleSearch = () => {
     const trimmed = this.state.searchTerm.trim();
+    if (trimmed === this.state.lastSearchTerm) return;
+
     localStorage.setItem('searchTerm', trimmed);
-    this.setState({ searchTerm: trimmed });
+    this.setState({ searchTerm: trimmed, lastSearchTerm: trimmed });
     this.props.onSearch(trimmed);
   };
 
