@@ -30,3 +30,20 @@
   padding: 20px;
   min-height: 300px;
 }
+
+.error-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.error-button:hover {
+  background: #ff4444;
+}

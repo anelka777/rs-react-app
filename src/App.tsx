@@ -9,6 +9,7 @@ interface AppState {
   pokemons: Pokemon[];
   isLoading: boolean;
   error: string | null;
+  shouldThrow: boolean;
 }
 
 class App extends React.Component<object, AppState> {
@@ -18,6 +19,7 @@ class App extends React.Component<object, AppState> {
       pokemons: [],
       isLoading: true,
       error: null,
+      shouldThrow: false,
     };
   }
 
@@ -39,10 +41,17 @@ class App extends React.Component<object, AppState> {
     }
   };
 
+  throwError = () => {
+    this.setState({ shouldThrow: true });
+  };
+
   render() {
+    if (this.state.shouldThrow) {
+      throw new Error('Test error!');
+    }
     const { pokemons, isLoading, error } = this.state;
     return (
-      <div className="App">
+      <div className="app">
         <h1 className="app__title">Pokémon Search App</h1>
         <section className="search-section">
           <Search onSearch={this.loadPokemons} />
@@ -50,6 +59,9 @@ class App extends React.Component<object, AppState> {
         <section className="results-section">
           <CardList pokemons={pokemons} isLoading={isLoading} error={error} />
         </section>
+        <button className="error-button" onClick={this.throwError}>
+          Simulate Error
+        </button>
       </div>
     );
   }
