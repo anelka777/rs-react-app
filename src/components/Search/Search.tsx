@@ -32,6 +32,12 @@ class Search extends React.Component<SearchProps, SearchState> {
     this.props.onSearch(trimmed);
   };
 
+  handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      this.handleSearch();
+    }
+  };
+
   render() {
     return (
       <div className="search">
@@ -41,6 +47,7 @@ class Search extends React.Component<SearchProps, SearchState> {
           placeholder="Search pokemon... "
           value={this.state.searchTerm}
           onChange={this.handleInputChange}
+          onKeyDown={this.handleKeyDown}
         />
         <button className="search__button" onClick={this.handleSearch}>
           Search
