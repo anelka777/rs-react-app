@@ -11,6 +11,13 @@ export interface PokemonType {
   };
 }
 
+export interface FlavorTextEntry {
+  flavor_text: string;
+  language: {
+    name: string;
+  };
+}
+
 export interface Pokemon {
   id: number;
   name: string;
@@ -21,6 +28,7 @@ export interface Pokemon {
     front_default: string;
   };
   types: PokemonType[];
+  description?: string;
 }
 
 export interface PokemonListResponse {
@@ -28,4 +36,8 @@ export interface PokemonListResponse {
   next: string | null;
   previous: string | null;
   results: PokemonListItem[];
+}
+
+export interface PokemonSpecies {
+  flavor_text_entries: FlavorTextEntry[];
 }

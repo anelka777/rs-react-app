@@ -14,11 +14,15 @@ class Card extends React.Component<CardProps> {
       <div className="card">
         <img src={pokemon.sprites.front_default} alt={pokemon.name} />
         <h3>{pokemon.name}</h3>
-        <p>{pokemon.types.map((t) => t.type.name).join(', ')}</p>
         <p>
-          Height: {pokemon.height / 10}m | Weight: {pokemon.weight / 10}kg
+          <span className="card__label">Type:</span>{' '}
+          {pokemon.types.map((t) => t.type.name).join(', ')}
         </p>
-        <p>Base XP: {pokemon.base_experience}</p>
+        <p>
+          <span className="card__label">Height:</span> {pokemon.height / 10}m |{' '}
+          <span className="card__label">Weight:</span> {pokemon.weight / 10}kg
+        </p>
+        {pokemon.description && <p>{pokemon.description}</p>}
       </div>
     );
   }
