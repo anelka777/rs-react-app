@@ -1,4 +1,5 @@
 import React from 'react';
+
 import type { Pokemon } from '../../types/pokemon';
 import './Card.css';
 
@@ -7,7 +8,7 @@ interface CardProps {
 }
 
 class Card extends React.Component<CardProps> {
-  render() {
+  render(): React.ReactElement {
     const { pokemon } = this.props;
 
     return (

@@ -19,26 +19,28 @@ class Search extends React.Component<SearchProps, SearchState> {
     };
   }
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({ searchTerm: event.target.value });
   };
 
-  handleSearch = () => {
-    const trimmed = this.state.searchTerm.trim();
-    if (trimmed === this.state.lastSearchTerm) return;
+  handleSearch = (): void => {
+    const trimmed: string = this.state.searchTerm.trim();
+    if (trimmed === this.state.lastSearchTerm) {
+      return;
+    }
 
     localStorage.setItem('searchTerm', trimmed);
     this.setState({ searchTerm: trimmed, lastSearchTerm: trimmed });
     this.props.onSearch(trimmed);
   };
 
-  handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
       this.handleSearch();
     }
   };
 
-  render() {
+  render(): React.ReactElement {
     return (
       <div className="search">
         <input

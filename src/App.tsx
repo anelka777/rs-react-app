@@ -1,7 +1,8 @@
 import React from 'react';
+
 import Search from './components/Search/Search';
 import CardList from './components/CardList/CardList';
-import { fetchPokemons } from './api/pokemon';
+import fetchPokemons from './api/pokemon';
 import type { Pokemon } from './types/pokemon';
 import './App.css';
 
@@ -23,12 +24,12 @@ class App extends React.Component<object, AppState> {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const searchTerm = localStorage.getItem('searchTerm') || '';
     this.loadPokemons(searchTerm);
   }
 
-  loadPokemons = async (searchTerm: string) => {
+  loadPokemons = async (searchTerm: string): Promise<void> => {
     this.setState({ isLoading: true, error: null });
     try {
       const pokemons = await fetchPokemons(searchTerm);
@@ -41,11 +42,11 @@ class App extends React.Component<object, AppState> {
     }
   };
 
-  throwError = () => {
+  throwError = (): void => {
     this.setState({ shouldThrow: true });
   };
 
-  render() {
+  render(): React.ReactElement {
     if (this.state.shouldThrow) {
       throw new Error('Test error!');
     }

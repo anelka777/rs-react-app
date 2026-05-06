@@ -1,4 +1,5 @@
 import React from 'react';
+
 import type { Pokemon } from '../../types/pokemon';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
@@ -11,9 +12,11 @@ interface CardListProps {
 }
 
 class CardList extends React.Component<CardListProps> {
-  render() {
+  render(): React.ReactElement {
     const { pokemons, isLoading, error } = this.props;
-    if (isLoading) return <Spinner />;
+    if (isLoading) {
+      return <Spinner />;
+    }
     if (error) {
       let errorMessage = error;
       if (error.includes('404')) {

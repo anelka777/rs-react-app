@@ -8,13 +8,15 @@ const BASE_URL = 'https://pokeapi.co/api/v2';
 
 const fetchDescription = async (id: number): Promise<string> => {
   const response = await fetch(`${BASE_URL}/pokemon-species/${id}`);
-  if (!response.ok) return '';
+  if (!response.ok) {
+    return '';
+  }
   const data: PokemonSpecies = await response.json();
   const entry = data.flavor_text_entries.find((e) => e.language.name === 'en');
   return entry ? entry.flavor_text.replace(/\f/g, ' ') : '';
 };
 
-export const fetchPokemons = async (searchTerm: string): Promise<Pokemon[]> => {
+const fetchPokemons = async (searchTerm: string): Promise<Pokemon[]> => {
   if (searchTerm) {
     const response = await fetch(
       `${BASE_URL}/pokemon/${searchTerm.toLowerCase()}`
@@ -44,3 +46,5 @@ export const fetchPokemons = async (searchTerm: string): Promise<Pokemon[]> => {
 
   return pokemons;
 };
+
+export default fetchPokemons;

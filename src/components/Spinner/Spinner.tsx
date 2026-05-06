@@ -2,7 +2,7 @@ import React from 'react';
 import './Spinner.css';
 
 class Spinner extends React.Component {
-  render() {
+  render(): React.ReactElement {
     return (
       <div className="spinner-container">
         <div className="spinner"></div>
