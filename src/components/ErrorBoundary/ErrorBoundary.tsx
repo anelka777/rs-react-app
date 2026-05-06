@@ -20,9 +20,13 @@ class ErrorBoundary extends React.Component<
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error) {
-    console.error('ErrorBoundary caught an error:', error);
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
   }
+
+  resetError = (): void => {
+    this.setState({ hasError: false });
+  };
 
   render() {
     if (this.state.hasError) {
@@ -30,6 +34,9 @@ class ErrorBoundary extends React.Component<
         <div className="error-boundary">
           <h2>Something went wrong 😢</h2>
           <p>The application encountered an unexpected error.</p>
+          <button className="reset-button" onClick={this.resetError}>
+            Try again
+          </button>
         </div>
       );
     }
