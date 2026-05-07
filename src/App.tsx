@@ -2,12 +2,12 @@ import React from 'react';
 
 import Search from './components/Search/Search';
 import CardList from './components/CardList/CardList';
-import fetchPokemons from './api/pokemon';
-import type { Pokemon } from './types/pokemon';
-import './App.css';
+import fetchCharacters from './api/character.ts';
+import type { Character } from './types/character.ts';
+import styles from './App.module.css';
 
 interface AppState {
-  pokemons: Pokemon[];
+  characters: Character[];
   isLoading: boolean;
   error: string | null;
   shouldThrow: boolean;
@@ -17,7 +17,7 @@ class App extends React.Component<object, AppState> {
   constructor(props: object) {
     super(props);
     this.state = {
-      pokemons: [],
+      characters: [],
       isLoading: true,
       error: null,
       shouldThrow: false,
@@ -26,14 +26,14 @@ class App extends React.Component<object, AppState> {
 
   componentDidMount(): void {
     const searchTerm = localStorage.getItem('searchTerm') || '';
-    this.loadPokemons(searchTerm);
+    this.loadCharacters(searchTerm);
   }
 
-  loadPokemons = async (searchTerm: string): Promise<void> => {
+  loadCharacters = async (searchTerm: string): Promise<void> => {
     this.setState({ isLoading: true, error: null });
     try {
-      const pokemons = await fetchPokemons(searchTerm);
-      this.setState({ pokemons, isLoading: false });
+      const characters = await fetchCharacters(searchTerm);
+      this.setState({ characters, isLoading: false });
     } catch (error) {
       this.setState({
         error: error instanceof Error ? error.message : 'Something went wrong',
@@ -50,17 +50,21 @@ class App extends React.Component<object, AppState> {
     if (this.state.shouldThrow) {
       throw new Error('Test error!');
     }
-    const { pokemons, isLoading, error } = this.state;
+    const { characters, isLoading, error } = this.state;
     return (
-      <div className="app">
-        <h1 className="app__title">Pokémon Search App</h1>
-        <section className="search-section">
-          <Search onSearch={this.loadPokemons} />
+      <div className={styles.app}>
+        <h1 className={styles.app__title}>Rick and Morty Characters</h1>
+        <section className={styles.search_section}>
+          <Search onSearch={this.loadCharacters} />
         </section>
-        <section className="results-section">
-          <CardList pokemons={pokemons} isLoading={isLoading} error={error} />
+        <section className={styles.results_section}>
+          <CardList
+            characters={characters}
+            isLoading={isLoading}
+            error={error}
+          />
         </section>
-        <button className="error-button" onClick={this.throwError}>
+        <button className={styles.error_button} onClick={this.throwError}>
           Simulate Error
         </button>
       </div>

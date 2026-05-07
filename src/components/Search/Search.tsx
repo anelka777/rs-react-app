@@ -1,5 +1,6 @@
 import React from 'react';
-import './Search.css';
+
+import styles from './Search.module.css';
 
 interface SearchProps {
   onSearch: (searchTerm: string) => void;
@@ -42,16 +43,16 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   render(): React.ReactElement {
     return (
-      <div className="search">
+      <div className={styles.search}>
         <input
           type="text"
-          className="search__input"
+          className={styles.search__input}
           placeholder="Search pokemon... "
           value={this.state.searchTerm}
           onChange={this.handleInputChange}
           onKeyDown={this.handleKeyDown}
         />
-        <button className="search__button" onClick={this.handleSearch}>
+        <button className={styles.search__button} onClick={this.handleSearch}>
           Search
         </button>
       </div>

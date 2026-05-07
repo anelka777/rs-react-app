@@ -1,42 +1,43 @@
 import React from 'react';
 
-import type { Pokemon } from '../../types/pokemon';
+import type { Character } from '../../types/character.ts';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
-import './CardList.css';
+
+import styles from './CardList.module.css';
 
 interface CardListProps {
-  pokemons: Pokemon[];
+  characters: Character[];
   isLoading: boolean;
   error: string | null;
 }
 
 class CardList extends React.Component<CardListProps> {
   render(): React.ReactElement {
-    const { pokemons, isLoading, error } = this.props;
+    const { characters, isLoading, error } = this.props;
     if (isLoading) {
       return <Spinner />;
     }
     if (error) {
       let errorMessage = error;
       if (error.includes('404')) {
-        errorMessage = 'Pokemon not found. Try another name!';
+        errorMessage = 'Character not found. Try another name!';
       } else if (error.includes('400')) {
         errorMessage = 'Invalid search. Please use English letters only!';
       } else if (/5\d\d/.test(error)) {
         errorMessage = 'Server error. Please try again later!';
       }
       return (
-        <div className="error-message">
+        <div className={styles.error_message}>
           <p>⚠️ Oops! Something went wrong.</p>
           <p>{errorMessage}</p>
         </div>
       );
     }
     return (
-      <div className="card-list">
-        {pokemons.map((pokemon) => (
-          <Card key={pokemon.id} pokemon={pokemon} />
+      <div className={styles.card_list}>
+        {characters.map((character) => (
+          <Card key={character.id} character={character} />
         ))}
       </div>
     );

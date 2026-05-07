@@ -11,7 +11,7 @@
   padding: 20px 0;
 }
 
-.search-section {
+.search_section {
   background: #1e2736;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
@@ -21,7 +21,7 @@
   margin-bottom: 20px;
 }
 
-.results-section {
+.results_section {
   background: #1e2736;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
@@ -31,7 +31,7 @@
   min-height: 300px;
 }
 
-.error-button {
+.error_button {
   position: fixed;
   bottom: 20px;
   right: 20px;
