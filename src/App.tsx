@@ -4,7 +4,7 @@ import Search from './components/Search/Search';
 import CardList from './components/CardList/CardList';
 import fetchPokemons from './api/pokemon';
 import type { Pokemon } from './types/pokemon';
-import './App.css';
+import styles from './App.module.css';
 
 interface AppState {
   pokemons: Pokemon[];
@@ -52,15 +52,15 @@ class App extends React.Component<object, AppState> {
     }
     const { pokemons, isLoading, error } = this.state;
     return (
-      <div className="app">
-        <h1 className="app__title">Pokémon Search App</h1>
-        <section className="search-section">
+      <div className={styles.app}>
+        <h1 className={styles.app__title}>Pokémon Search App</h1>
+        <section className={styles.search_section}>
           <Search onSearch={this.loadPokemons} />
         </section>
-        <section className="results-section">
+        <section className={styles.results_section}>
           <CardList pokemons={pokemons} isLoading={isLoading} error={error} />
         </section>
-        <button className="error-button" onClick={this.throwError}>
+        <button className={styles.error_button} onClick={this.throwError}>
           Simulate Error
         </button>
       </div>

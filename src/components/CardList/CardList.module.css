@@ -1,22 +1,22 @@
-.card-list {
+.card_list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
   padding: 10px;
 }
 
-.error-message {
+.error_message {
   text-align: center;
   padding: 40px;
   color: #ff6b6b;
 }
 
-.error-message p:first-child {
+.error_message p:first-child {
   font-size: 20px;
   margin-bottom: 8px;
 }
 
-.error-message p:last-child {
+.error_message p:last-child {
   font-size: 14px;
   color: #9ca3af;
 }

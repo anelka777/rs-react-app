@@ -3,7 +3,7 @@ import React from 'react';
 import type { Pokemon } from '../../types/pokemon';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
-import './CardList.css';
+import styles from './CardList.module.css';
 
 interface CardListProps {
   pokemons: Pokemon[];
@@ -27,14 +27,14 @@ class CardList extends React.Component<CardListProps> {
         errorMessage = 'Server error. Please try again later!';
       }
       return (
-        <div className="error-message">
+        <div className={styles.error_message}>
           <p>⚠️ Oops! Something went wrong.</p>
           <p>{errorMessage}</p>
         </div>
       );
     }
     return (
-      <div className="card-list">
+      <div className={styles.card_list}>
         {pokemons.map((pokemon) => (
           <Card key={pokemon.id} pokemon={pokemon} />
         ))}

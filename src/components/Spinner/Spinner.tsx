@@ -1,11 +1,12 @@
 import React from 'react';
-import './Spinner.css';
+
+import styles from './Spinner.module.css';
 
 class Spinner extends React.Component {
   render(): React.ReactElement {
     return (
-      <div className="spinner-container">
-        <div className="spinner"></div>
+      <div className={styles.spinner_container}>
+        <div className={styles.spinner}></div>
       </div>
     );
   }
