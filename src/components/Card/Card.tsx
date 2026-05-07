@@ -1,32 +1,35 @@
 import React from 'react';
 
-import type { Pokemon } from '../../types/pokemon';
+import type { Character } from '../../types/character.ts';
 
 import styles from './Card.module.css';
 
 interface CardProps {
-  pokemon: Pokemon;
+  character: Character;
 }
 
 class Card extends React.Component<CardProps> {
   render(): React.ReactElement {
-    const { pokemon } = this.props;
+    const { character } = this.props;
 
     return (
       <div className={styles.card}>
-        <img src={pokemon.sprites.front_default} alt={pokemon.name} />
-        <h3>{pokemon.name}</h3>
+        <img src={character.image} alt={character.name} />
+        <h3>{character.name}</h3>
         <p>
-          <span className={styles.card__label}>Type:</span>{' '}
-          {pokemon.types.map((t) => t.type.name).join(', ')}
+          <span className={styles.card__label}>Status:</span> {character.status}
         </p>
         <p>
-          <span className={styles.card__label}>Height:</span>{' '}
-          {pokemon.height / 10}m |{' '}
-          <span className={styles.card__label}>Weight:</span>{' '}
-          {pokemon.weight / 10}kg
+          <span className={styles.card__label}>Species:</span>{' '}
+          {character.species}
         </p>
-        {pokemon.description && <p>{pokemon.description}</p>}
+        <p>
+          <span className={styles.card__label}>Gender:</span> {character.gender}
+        </p>
+        <p>
+          <span className={styles.card__label}>Location:</span>{' '}
+          {character.location.name}
+        </p>
       </div>
     );
   }
