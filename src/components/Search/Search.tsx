@@ -47,7 +47,7 @@ class Search extends React.Component<SearchProps, SearchState> {
         <input
           type="text"
           className={styles.search__input}
-          placeholder="Search pokemon... "
+          placeholder="Search character... "
           value={this.state.searchTerm}
           onChange={this.handleInputChange}
           onKeyDown={this.handleKeyDown}
