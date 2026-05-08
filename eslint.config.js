@@ -9,7 +9,7 @@ import importPlugin from 'eslint-plugin-import';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules']),
+  globalIgnores(['dist', 'node_modules', 'coverage']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
