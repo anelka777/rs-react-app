@@ -51,4 +51,19 @@ describe('Search', () => {
     fireEvent.click(screen.getByRole('button', { name: /search/i }));
     expect(mockOnSearch).not.toHaveBeenCalled();
   });
+  it('trims whitespace before saving to localStorage', () => {
+    render(<Search onSearch={mockOnSearch} />);
+    const input = screen.getByRole('textbox');
+    fireEvent.change(input, { target: { value: '  Rick  ' } });
+    fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    expect(localStorage.getItem('searchTerm')).toBe('Rick');
+    expect(mockOnSearch).toHaveBeenCalledWith('Rick');
+  });
+  it('does not call onSearch when non-Enter key is pressed', () => {
+    render(<Search onSearch={mockOnSearch} />);
+    const input = screen.getByRole('textbox');
+    fireEvent.change(input, { target: { value: 'Rick' } });
+    fireEvent.keyDown(input, { key: 'Escape' });
+    expect(mockOnSearch).not.toHaveBeenCalled();
+  });
 });

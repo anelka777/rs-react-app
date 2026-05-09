@@ -69,4 +69,24 @@ describe('App', () => {
     fireEvent.click(screen.getByText('Simulate Error'));
     expect(screen.getByText('Something went wrong 😢')).toBeInTheDocument();
   });
+  it('calls fetchCharacters with search term when user searches', async () => {
+    mockFetchCharacters.mockResolvedValue(mockCharacters);
+    render(<App />);
+    await waitFor(() => {
+      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
+    });
+    const input = screen.getByRole('textbox');
+    fireEvent.change(input, { target: { value: 'Morty' } });
+    fireEvent.click(screen.getByRole('button', { name: /search/i }));
+    await waitFor(() => {
+      expect(mockFetchCharacters).toHaveBeenCalledWith('Morty');
+    });
+  });
+  it('handles non-Error exception', async () => {
+    mockFetchCharacters.mockRejectedValue('string error');
+    render(<App />);
+    await waitFor(() => {
+      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+    });
+  });
 });
