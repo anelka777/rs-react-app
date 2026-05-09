@@ -5,7 +5,7 @@ import styles from './Spinner.module.css';
 class Spinner extends React.Component {
   render(): React.ReactElement {
     return (
-      <div className={styles.spinner_container}>
+      <div className={styles.spinner_container} data-testid="spinner">
         <div className={styles.spinner}></div>
       </div>
     );
