@@ -9,6 +9,14 @@ const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }): null => {
   return null;
 };
 
+beforeEach(() => {
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 describe('ErrorBoundary', () => {
   it('renders children when there is no error', () => {
     render(

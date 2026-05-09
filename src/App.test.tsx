@@ -23,6 +23,11 @@ const mockFetchCharacters = vi.mocked(fetchCharacters);
 beforeEach(() => {
   localStorage.clear();
   mockFetchCharacters.mockClear();
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
 });
 
 describe('App', () => {
@@ -34,10 +39,13 @@ describe('App', () => {
     });
   });
 
-  it('shows spinner while loading', () => {
+  it('shows spinner while loading', async () => {
     mockFetchCharacters.mockResolvedValue(mockCharacters);
     render(<App />);
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
+    });
   });
 
   it('loads with search term from localStorage', async () => {
