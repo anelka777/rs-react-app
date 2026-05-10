@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Character } from '../../types/character.ts';
+import type { Character } from '../../types/character';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
 

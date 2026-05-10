@@ -2,8 +2,8 @@ import React from 'react';
 
 import Search from './components/Search/Search';
 import CardList from './components/CardList/CardList';
-import fetchCharacters from './api/character.ts';
-import type { Character } from './types/character.ts';
+import fetchCharacters from './api/character';
+import type { Character } from './types/character';
 import styles from './App.module.css';
 
 interface AppState {
