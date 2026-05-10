@@ -1,18 +1,10 @@
 import { render, screen } from '@testing-library/react';
 
+import mockCharacters from '../../test-utils/mockData';
+
 import Card from './Card';
 
-const mockCharacter = {
-  id: 1,
-  name: 'Rick Sanchez',
-  status: 'Alive',
-  species: 'Human',
-  gender: 'Male',
-  image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-  location: {
-    name: 'Earth',
-  },
-};
+const mockCharacter = mockCharacters[0];
 
 describe('Card', () => {
   it('renders character name', () => {

@@ -3,20 +3,9 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import fetchCharacters from './api/character';
+import mockCharacters from './test-utils/mockData';
 
 vi.mock('./api/character');
-
-const mockCharacters = [
-  {
-    id: 1,
-    name: 'Rick Sanchez',
-    status: 'Alive',
-    species: 'Human',
-    gender: 'Male',
-    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-    location: { name: 'Earth' },
-  },
-];
 
 const mockFetchCharacters = vi.mocked(fetchCharacters);
 

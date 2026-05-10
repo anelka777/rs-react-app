@@ -1,27 +1,8 @@
 import { render, screen } from '@testing-library/react';
 
-import CardList from './CardList';
+import mockCharacters from '../../test-utils/mockData';
 
-const mockCharacters = [
-  {
-    id: 1,
-    name: 'Rick Sanchez',
-    status: 'Alive',
-    species: 'Human',
-    gender: 'Male',
-    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-    location: { name: 'Earth' },
-  },
-  {
-    id: 2,
-    name: 'Morty Smith',
-    status: 'Alive',
-    species: 'Human',
-    gender: 'Male',
-    image: 'https://rickandmortyapi.com/api/character/avatar/2.jpeg',
-    location: { name: 'Earth' },
-  },
-];
+import CardList from './CardList';
 
 describe('CardList', () => {
   it('shows spinner when loading', () => {
