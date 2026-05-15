@@ -43,7 +43,7 @@ const App = (): React.ReactElement => {
     };
 
     load();
-  }, []);
+  }, [storedTerm]);
 
   if (shouldThrow) {
     throw new Error('Test error!');
