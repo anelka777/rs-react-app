@@ -20,10 +20,11 @@ const Search = ({ onSearch }: SearchProps): React.ReactElement => {
   };
 
   const handleSearch = (): void => {
-    const trimmed: string = searchTerm.trim();
+    const trimmed = searchTerm.trim();
     if (trimmed === storedTerm) {
       return;
     }
+    setSearchTerm(trimmed);
     setStoredTerm(trimmed);
     onSearch(trimmed);
   };
