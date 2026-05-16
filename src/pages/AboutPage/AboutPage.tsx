@@ -1,12 +1,14 @@
 import type React from 'react';
 import { Link } from 'react-router-dom';
 
+import styles from './AboutPage.module.css';
+
 const AboutPage = (): React.ReactElement => {
   return (
-    <div>
-      <h1>About</h1>
-      <p>Author: Alena Danilchenko</p>
-      <p>
+    <div className={styles.about}>
+      <h1 className={styles.title}>About</h1>
+      <p className={styles.info}>Author: Alena Danilchenko</p>
+      <p className={styles.info}>
         This app was built as part of the{' '}
         <a
           href="https://rs.school/courses/reactjs"
@@ -16,7 +18,9 @@ const AboutPage = (): React.ReactElement => {
           RS School React Course
         </a>
       </p>
-      <Link to="/">Back to Home</Link>
+      <Link to="/" className={styles.back}>
+        Back to Home
+      </Link>
     </div>
   );
 };
