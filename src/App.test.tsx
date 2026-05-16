@@ -21,7 +21,7 @@ describe('App', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText('About Page')).toBeInTheDocument();
+    expect(screen.getByText('Author: Alena Danilchenko')).toBeInTheDocument();
   });
 
   it('renders 404 page for unknown route', () => {
