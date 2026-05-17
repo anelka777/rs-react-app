@@ -11,7 +11,7 @@ describe('fetchCharacters', () => {
   it('fetches characters without search term', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ results: [] }),
+      json: () => Promise.resolve({ info: { pages: 42 }, results: [] }),
     });
 
     await fetchCharacters('');
@@ -23,13 +23,13 @@ describe('fetchCharacters', () => {
   it('fetches characters with search term', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ results: [] }),
+      json: () => Promise.resolve({ info: { pages: 1 }, results: [] }),
     });
 
     await fetchCharacters('rick');
 
     expect(mockFetch).toHaveBeenCalledWith(
-      'https://rickandmortyapi.com/api/character?name=rick'
+      'https://rickandmortyapi.com/api/character?name=rick&page=1'
     );
   });
   it('throws error when response is not ok', async () => {
@@ -44,11 +44,17 @@ describe('fetchCharacters', () => {
     mockFetch.mockResolvedValue({
       ok: true,
       json: () =>
-        Promise.resolve({ results: [{ id: 1, name: 'Rick Sanchez' }] }),
+        Promise.resolve({
+          info: { pages: 42 },
+          results: [{ id: 1, name: 'Rick Sanchez' }],
+        }),
     });
 
     const result = await fetchCharacters('');
 
-    expect(result).toEqual([{ id: 1, name: 'Rick Sanchez' }]);
+    expect(result).toEqual({
+      characters: [{ id: 1, name: 'Rick Sanchez' }],
+      totalPages: 42,
+    });
   });
 });

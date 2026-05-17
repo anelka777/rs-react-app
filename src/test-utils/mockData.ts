@@ -21,4 +21,9 @@ const mockCharacters: Character[] = [
   },
 ];
 
+export const mockFetchResult = {
+  characters: mockCharacters,
+  totalPages: 42,
+};
+
 export default mockCharacters;

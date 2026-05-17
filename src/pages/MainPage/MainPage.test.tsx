@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
 import fetchCharacters from '../../api/character';
-import mockCharacters from '../../test-utils/mockData';
+import { mockFetchResult } from '../../test-utils/mockData';
 
 import MainPage from './MainPage';
 
@@ -23,7 +23,7 @@ afterEach(() => {
 
 describe('MainPage', () => {
   it('fetches and displays characters on mount', async () => {
-    mockFetchCharacters.mockResolvedValue(mockCharacters);
+    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     render(
       <MemoryRouter>
         <MainPage />
@@ -35,7 +35,7 @@ describe('MainPage', () => {
   });
 
   it('shows spinner while loading', async () => {
-    mockFetchCharacters.mockResolvedValue(mockCharacters);
+    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     render(
       <MemoryRouter>
         <MainPage />
@@ -47,16 +47,15 @@ describe('MainPage', () => {
     });
   });
 
-  it('loads with search term from localStorage', async () => {
-    localStorage.setItem('searchTerm', 'Rick');
-    mockFetchCharacters.mockResolvedValue(mockCharacters);
+  it('loads with search term from URL', async () => {
+    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/?page=1&search=Rick']}>
         <MainPage />
       </MemoryRouter>
     );
     await waitFor(() => {
-      expect(mockFetchCharacters).toHaveBeenCalledWith('Rick');
+      expect(mockFetchCharacters).toHaveBeenCalledWith('Rick', 1);
     });
   });
 
@@ -75,7 +74,7 @@ describe('MainPage', () => {
   });
 
   it('throws error when Simulate Error button is clicked', () => {
-    mockFetchCharacters.mockResolvedValue(mockCharacters);
+    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     render(
       <MemoryRouter>
         <ErrorBoundary>
@@ -88,7 +87,7 @@ describe('MainPage', () => {
   });
 
   it('calls fetchCharacters with search term when user searches', async () => {
-    mockFetchCharacters.mockResolvedValue(mockCharacters);
+    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     render(
       <MemoryRouter>
         <MainPage />
@@ -101,7 +100,7 @@ describe('MainPage', () => {
     fireEvent.change(input, { target: { value: 'Morty' } });
     fireEvent.click(screen.getByRole('button', { name: /search/i }));
     await waitFor(() => {
-      expect(mockFetchCharacters).toHaveBeenCalledWith('Morty');
+      expect(mockFetchCharacters).toHaveBeenCalledWith('Morty', 1);
     });
   });
 
@@ -117,7 +116,7 @@ describe('MainPage', () => {
     });
   });
   it('handles non-Error exception when searching', async () => {
-    mockFetchCharacters.mockResolvedValue(mockCharacters);
+    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     render(
       <MemoryRouter>
         <MainPage />
