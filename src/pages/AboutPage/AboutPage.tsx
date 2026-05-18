@@ -19,7 +19,7 @@ const AboutPage = (): React.ReactElement => {
         </a>
       </p>
       <Link to="/" className={styles.back}>
-        Back to Home
+        ← Back to Home
       </Link>
     </div>
   );
