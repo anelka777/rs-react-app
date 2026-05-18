@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import Search from '../../components/Search/Search';
 import CardList from '../../components/CardList/CardList';
 import Pagination from '../../components/Pagination/Pagination';
-import fetchCharacters from '../../api/character';
+import { fetchCharacters } from '../../api/character';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import type { Character } from '../../types/character';
 import styles from '../../App.module.css';

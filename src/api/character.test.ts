@@ -1,4 +1,4 @@
-import fetchCharacters from './character';
+import { fetchCharacters } from './character';
 
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);

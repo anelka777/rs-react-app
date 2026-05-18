@@ -2,7 +2,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
-import fetchCharacters from '../../api/character';
+import { fetchCharacters } from '../../api/character';
 import { mockFetchResult } from '../../test-utils/mockData';
 
 import MainPage from './MainPage';
