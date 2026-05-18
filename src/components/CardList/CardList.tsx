@@ -8,12 +8,14 @@ interface CardListProps {
   characters: Character[];
   isLoading: boolean;
   error: string | null;
+  onCardClick: (id: number) => void;
 }
 
 const CardList = ({
   characters,
   isLoading,
   error,
+  onCardClick,
 }: CardListProps): React.ReactElement => {
   if (isLoading) {
     return <Spinner />;
@@ -37,7 +39,11 @@ const CardList = ({
   return (
     <div className={styles.card_list}>
       {characters.map((character) => (
-        <Card key={character.id} character={character} />
+        <Card
+          key={character.id}
+          character={character}
+          onClick={() => onCardClick(character.id)}
+        />
       ))}
     </div>
   );

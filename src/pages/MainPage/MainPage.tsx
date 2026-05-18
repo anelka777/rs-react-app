@@ -1,6 +1,6 @@
 import type React from 'react';
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Outlet, useNavigate } from 'react-router-dom';
 
 import Search from '../../components/Search/Search';
 import CardList from '../../components/CardList/CardList';
@@ -21,6 +21,8 @@ const MainPage = (): React.ReactElement => {
 
   const page = Number(searchParams.get('page')) || 1;
   const search = searchParams.get('search') ?? '';
+  const details = searchParams.get('details');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const load = async (): Promise<void> => {
@@ -45,6 +47,16 @@ const MainPage = (): React.ReactElement => {
     setSearchParams({ page: '1', search: searchTerm });
   };
 
+  const handleCardClick = (id: number): void => {
+    setSearchParams({ page: String(page), search, details: String(id) });
+    navigate(`/details?page=${page}&search=${search}&details=${id}`);
+  };
+
+  const handleCloseDetail = (): void => {
+    setSearchParams({ page: String(page), search });
+    navigate(`/?page=${page}&search=${search}`);
+  };
+
   if (shouldThrow) {
     throw new Error('Test error!');
   }
@@ -55,9 +67,24 @@ const MainPage = (): React.ReactElement => {
       <section className={styles.search_section}>
         <Search onSearch={handleSearch} />
       </section>
-      <section className={styles.results_section}>
-        <CardList characters={characters} isLoading={isLoading} error={error} />
-      </section>
+
+      <div className={details ? styles.split_layout : ''}>
+        <section className={styles.results_section}>
+          <CardList
+            characters={characters}
+            isLoading={isLoading}
+            error={error}
+            onCardClick={handleCardClick}
+          />
+        </section>
+        {details && (
+          <section className={styles.detail_section}>
+            <button onClick={handleCloseDetail}>✕</button>
+            <Outlet />
+          </section>
+        )}
+      </div>
+
       {!isLoading && (
         <Pagination
           page={page}
