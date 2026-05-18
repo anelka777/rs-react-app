@@ -6,6 +6,8 @@ import { fetchCharacterById } from '../../api/character';
 import Spinner from '../../components/Spinner/Spinner';
 import type { CharacterDetail as CharacterDetailType } from '../../types/character';
 
+import styles from './CharacterDetail.module.css';
+
 const CharacterDetail = (): React.ReactElement => {
   const [character, setCharacter] = useState<CharacterDetailType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -46,14 +48,30 @@ const CharacterDetail = (): React.ReactElement => {
   }
 
   return (
-    <div>
-      <img src={character.image} alt={character.name} />
-      <h2>{character.name}</h2>
-      <p>Status: {character.status}</p>
-      <p>Species: {character.species}</p>
-      <p>Gender: {character.gender}</p>
-      <p>Location: {character.location.name}</p>
-      <p>Episodes: {character.episode.length}</p>
+    <div className={styles.detail}>
+      <img
+        src={character.image}
+        alt={character.name}
+        className={styles.image}
+      />
+      <h2 className={styles.name}>{character.name}</h2>
+      <p className={styles.info}>
+        <span className={styles.label}>Status:</span> {character.status}
+      </p>
+      <p className={styles.info}>
+        <span className={styles.label}>Species:</span> {character.species}
+      </p>
+      <p className={styles.info}>
+        <span className={styles.label}>Gender:</span> {character.gender}
+      </p>
+      <p className={styles.info}>
+        <span className={styles.label}>Location:</span>{' '}
+        {character.location.name}
+      </p>
+      <p className={styles.info}>
+        <span className={styles.label}>Episodes:</span>{' '}
+        {character.episode.length}
+      </p>
     </div>
   );
 };

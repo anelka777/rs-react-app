@@ -8,7 +8,8 @@ import Pagination from '../../components/Pagination/Pagination';
 import { fetchCharacters } from '../../api/character';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import type { Character } from '../../types/character';
-import styles from '../../App.module.css';
+
+import styles from './MainPage.module.css';
 
 const MainPage = (): React.ReactElement => {
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -79,7 +80,9 @@ const MainPage = (): React.ReactElement => {
         </section>
         {details && (
           <section className={styles.detail_section}>
-            <button onClick={handleCloseDetail}>✕</button>
+            <button className={styles.close_button} onClick={handleCloseDetail}>
+              ✕
+            </button>
             <Outlet />
           </section>
         )}
