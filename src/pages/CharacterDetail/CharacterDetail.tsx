@@ -9,12 +9,12 @@ import type { CharacterDetail as CharacterDetailType } from '../../types/charact
 import styles from './CharacterDetail.module.css';
 
 const CharacterDetail = (): React.ReactElement => {
-  const [character, setCharacter] = useState<CharacterDetailType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
-
   const id = Number(searchParams.get('details'));
+
+  const [character, setCharacter] = useState<CharacterDetailType | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(!!id);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) {
@@ -36,6 +36,10 @@ const CharacterDetail = (): React.ReactElement => {
 
     load();
   }, [id]);
+
+  if (!id) {
+    return <></>;
+  }
 
   if (isLoading) {
     return <Spinner />;

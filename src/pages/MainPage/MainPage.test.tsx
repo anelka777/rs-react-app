@@ -133,4 +133,32 @@ describe('MainPage', () => {
       expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     });
   });
+  it('navigates to details when card is clicked', async () => {
+    mockFetchCharacters.mockResolvedValue(mockFetchResult);
+    render(
+      <MemoryRouter initialEntries={['/?page=1&search=']}>
+        <MainPage />
+      </MemoryRouter>
+    );
+    await waitFor(() => {
+      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText('Rick Sanchez'));
+    await waitFor(() => {
+      expect(screen.getByText('✕')).toBeInTheDocument();
+    });
+  });
+
+  it('closes detail panel when close button is clicked', async () => {
+    mockFetchCharacters.mockResolvedValue(mockFetchResult);
+    render(
+      <MemoryRouter initialEntries={['/?page=1&search=&details=1']}>
+        <MainPage />
+      </MemoryRouter>
+    );
+    await waitFor(() => {
+      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText('✕'));
+  });
 });

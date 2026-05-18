@@ -1,4 +1,4 @@
-import { fetchCharacters } from './character';
+import { fetchCharacters, fetchCharacterById } from './character';
 
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -56,5 +56,26 @@ describe('fetchCharacters', () => {
       characters: [{ id: 1, name: 'Rick Sanchez' }],
       totalPages: 42,
     });
+  });
+  it('fetches character by id', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          id: 1,
+          name: 'Rick Sanchez',
+          status: 'Alive',
+          species: 'Human',
+          type: '',
+          gender: 'Male',
+          origin: { name: 'Earth' },
+          location: { name: 'Earth' },
+          image: 'img.jpg',
+          episode: [],
+        }),
+    });
+
+    const result = await fetchCharacterById(1);
+    expect(result.name).toBe('Rick Sanchez');
   });
 });
