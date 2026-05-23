@@ -75,7 +75,7 @@ describe('fetchCharacters', () => {
         }),
     });
 
-    const result = await fetchCharacterById(1);
+    const result = await fetchCharacterById('1');
     expect(result.name).toBe('Rick Sanchez');
   });
 });

@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router';
 import { vi } from 'vitest';
 
 import { fetchCharacterById } from '../../api/character';
@@ -21,6 +21,20 @@ const mockCharacter = {
   episode: ['ep1', 'ep2', 'ep3'],
 };
 
+const renderCharacterDetail = (
+  detailsId?: string
+): ReturnType<typeof render> => {
+  const path = detailsId ? `/page/1/details/${detailsId}` : '/page/1';
+  const router = createMemoryRouter(
+    [
+      { path: '/page/:page/details/:detailsId', element: <CharacterDetail /> },
+      { path: '/page/:page', element: <CharacterDetail /> },
+    ],
+    { initialEntries: [path] }
+  );
+  return render(<RouterProvider router={router} />);
+};
+
 beforeEach(() => {
   mockFetchCharacterById.mockClear();
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -33,21 +47,13 @@ afterEach(() => {
 describe('CharacterDetail', () => {
   it('shows spinner while loading', () => {
     mockFetchCharacterById.mockResolvedValue(mockCharacter);
-    render(
-      <MemoryRouter initialEntries={['/?details=1']}>
-        <CharacterDetail />
-      </MemoryRouter>
-    );
+    renderCharacterDetail('1');
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
   it('displays character details after loading', async () => {
     mockFetchCharacterById.mockResolvedValue(mockCharacter);
-    render(
-      <MemoryRouter initialEntries={['/?details=1']}>
-        <CharacterDetail />
-      </MemoryRouter>
-    );
+    renderCharacterDetail('1');
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
@@ -58,22 +64,15 @@ describe('CharacterDetail', () => {
 
   it('shows error message when API fails', async () => {
     mockFetchCharacterById.mockRejectedValue(new Error('Error: 404'));
-    render(
-      <MemoryRouter initialEntries={['/?details=1']}>
-        <CharacterDetail />
-      </MemoryRouter>
-    );
+    renderCharacterDetail('1');
     await waitFor(() => {
       expect(screen.getByText(/Error/)).toBeInTheDocument();
     });
   });
+
   it('returns nothing when no id in URL', () => {
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <CharacterDetail />
-      </MemoryRouter>
-    );
-    expect(screen.queryByText('No character found')).not.toBeInTheDocument();
+    renderCharacterDetail();
     expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
+    expect(screen.getByText('No character found')).toBeInTheDocument();
   });
 });
