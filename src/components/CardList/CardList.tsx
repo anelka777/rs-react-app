@@ -31,6 +31,9 @@ const CardList = ({
       </div>
     );
   }
+  if (!characters.length) {
+    return <p>No characters found</p>;
+  }
   return (
     <div className={styles.card_list}>
       {characters.map((character) => (
