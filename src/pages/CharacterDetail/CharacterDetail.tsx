@@ -1,40 +1,12 @@
 import type { JSX } from 'react';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
 
-import { fetchCharacterById } from '../../api/character';
+import useCharacterDetail from '../../hooks/useCharacterDetail';
 import Spinner from '../../components/Spinner/Spinner';
-import type { CharacterDetail as CharacterDetailType } from '../../types/character';
 
 import styles from './CharacterDetail.module.css';
 
 const CharacterDetail = (): JSX.Element => {
-  const { detailsId } = useParams();
-
-  const [character, setCharacter] = useState<CharacterDetailType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!detailsId) {
-      return;
-    }
-
-    const load = async (): Promise<void> => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await fetchCharacterById(detailsId);
-        setCharacter(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Something went wrong');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    load();
-  }, [detailsId]);
+  const { character, isLoading, error } = useCharacterDetail();
 
   if (isLoading) {
     return <Spinner />;
