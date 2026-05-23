@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { JSX } from 'react';
 import { Routes, Route } from 'react-router';
 
 import Layout from './components/Layout/Layout';
@@ -7,7 +7,7 @@ import AboutPage from './pages/AboutPage/AboutPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import CharacterDetail from './pages/CharacterDetail/CharacterDetail';
 
-const App = (): React.ReactElement => {
+const App = (): JSX.Element => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
