@@ -1,18 +1,42 @@
-import type { Character, CharacterListResponse } from '../types/character.ts';
+import type {
+  Character,
+  CharacterListResponse,
+  CharacterDetail,
+} from '../types/character.ts';
 
 const BASE_URL = 'https://rickandmortyapi.com/api';
 
-const fetchCharacters = async (searchTerm: string): Promise<Character[]> => {
+interface FetchResult {
+  characters: Character[];
+  totalPages: number;
+}
+
+export const fetchCharacters = async (
+  searchTerm: string,
+  page = 1
+): Promise<FetchResult> => {
   const url = searchTerm
-    ? `${BASE_URL}/character?name=${searchTerm.toLowerCase()}`
-    : `${BASE_URL}/character?page=1`;
+    ? `${BASE_URL}/character?name=${searchTerm.toLowerCase()}&page=${page}`
+    : `${BASE_URL}/character?page=${page}`;
 
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Error: ${response.status}`);
   }
   const data: CharacterListResponse = await response.json();
-  return data.results;
+  return {
+    characters: data.results,
+    totalPages: data.info.pages,
+  };
 };
 
-export default fetchCharacters;
+export const fetchCharacterById = async (
+  id: string
+): Promise<CharacterDetail> => {
+  const response = await fetch(`${BASE_URL}/character/${id}`);
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status}`);
+  }
+  const data: CharacterDetail = await response.json();
+  return data;
+};

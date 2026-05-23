@@ -45,11 +45,11 @@ describe('Search', () => {
     fireEvent.keyDown(input, { key: 'Enter' });
     expect(mockOnSearch).toHaveBeenCalledWith('Rick');
   });
-  it('does not call onSearch if search term has not changed', () => {
+  it('calls onSearch with stored term on button click', () => {
     localStorage.setItem('searchTerm', 'Rick');
     render(<Search onSearch={mockOnSearch} />);
     fireEvent.click(screen.getByRole('button', { name: /search/i }));
-    expect(mockOnSearch).not.toHaveBeenCalled();
+    expect(mockOnSearch).toHaveBeenCalledWith('Rick');
   });
   it('trims whitespace before saving to localStorage', () => {
     render(<Search onSearch={mockOnSearch} />);

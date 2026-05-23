@@ -1,0 +1,32 @@
+.notFound {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: #1a1a2e;
+    border-radius: 12px;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+.title {
+    font-size: 72px;
+    margin-bottom: 8px;
+    color: #6c63ff;
+}
+
+.message {
+    color: #a0a0b0;
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+
+.back {
+    display: inline-block;
+    margin-top: 24px;
+    color: #6c63ff;
+    text-decoration: none;
+}
+
+.back:hover {
+    text-decoration: underline;
+}

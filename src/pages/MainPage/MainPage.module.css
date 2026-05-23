@@ -1,0 +1,88 @@
+.app {
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.app__title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 20px 0;
+}
+
+.search_section {
+    background: #1e2736;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.results_section {
+    background: #1e2736;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 300px;
+}
+
+.error_button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.error-button:hover {
+    background: #ff4444;
+}
+
+.split_layout {
+    display: flex;
+    gap: 20px;
+}
+
+.split_layout .results_section {
+    flex: 1;
+    min-width: 0;
+}
+
+.detail_section {
+    width: 350px;
+    flex-shrink: 0;
+    background: #1e2736;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+}
+
+.close_button {
+    display: block;
+    margin-left: auto;
+    margin-bottom: 12px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #a0a0b0;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.close_button:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
