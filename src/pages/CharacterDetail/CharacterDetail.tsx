@@ -12,7 +12,7 @@ const CharacterDetail = (): JSX.Element => {
   const { detailsId } = useParams();
 
   const [character, setCharacter] = useState<CharacterDetailType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(!!detailsId);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
