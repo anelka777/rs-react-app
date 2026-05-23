@@ -20,11 +20,17 @@ const MainPage = (): JSX.Element => {
   const [error, setError] = useState<string | null>(null);
   const [shouldThrow, setShouldThrow] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [, setStoredTerm] = useLocalStorage('searchTerm', '');
+  const [storedTerm] = useLocalStorage('searchTerm', '');
   const [searchParams] = useSearchParams();
 
   const search = searchParams.get('search') ?? '';
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!searchParams.get('search') && storedTerm) {
+      navigate(`/page/${page}?search=${storedTerm}`, { replace: true });
+    }
+  }, []);
 
   useEffect(() => {
     const load = async (): Promise<void> => {
@@ -45,7 +51,6 @@ const MainPage = (): JSX.Element => {
   }, [searchParams, page]);
 
   const handleSearch = (searchTerm: string): void => {
-    setStoredTerm(searchTerm);
     navigate(`/page/1?search=${searchTerm}`);
   };
 
