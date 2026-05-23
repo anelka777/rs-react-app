@@ -112,7 +112,9 @@ describe('MainPage', () => {
     mockFetchCharacters.mockRejectedValue('string error');
     renderMainPage();
     await waitFor(() => {
-      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+      expect(
+        screen.getByText('Unexpected error. Please try again!')
+      ).toBeInTheDocument();
     });
   });
 
@@ -127,7 +129,9 @@ describe('MainPage', () => {
     fireEvent.change(input, { target: { value: 'Morty' } });
     fireEvent.click(screen.getByRole('button', { name: /search/i }));
     await waitFor(() => {
-      expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+      expect(
+        screen.getByText('Unexpected error. Please try again!')
+      ).toBeInTheDocument();
     });
   });
 

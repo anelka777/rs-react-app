@@ -1,4 +1,7 @@
+import type { JSX } from 'react';
+
 import type { Character } from '../../types/character';
+import { getErrorMessage } from '../../utils/errorUtils';
 import Card from '../Card/Card';
 import Spinner from '../Spinner/Spinner';
 
@@ -16,23 +19,15 @@ const CardList = ({
   isLoading,
   error,
   onCardClick,
-}: CardListProps): React.ReactElement => {
+}: CardListProps): JSX.Element => {
   if (isLoading) {
     return <Spinner />;
   }
   if (error) {
-    let errorMessage = error;
-    if (error.includes('404')) {
-      errorMessage = 'Character not found. Try another name!';
-    } else if (error.includes('400')) {
-      errorMessage = 'Invalid search. Please use English letters only!';
-    } else if (/5\d\d/.test(error)) {
-      errorMessage = 'Server error. Please try again later!';
-    }
     return (
       <div className={styles.error_message}>
         <p>⚠️ Oops! Something went wrong.</p>
-        <p>{errorMessage}</p>
+        <p>{getErrorMessage(error)}</p>
       </div>
     );
   }
