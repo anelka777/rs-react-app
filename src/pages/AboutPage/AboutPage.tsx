@@ -1,11 +1,13 @@
-import type React from 'react';
+import type { JSX } from 'react';
 import { Link } from 'react-router';
+
+import { ROUTES } from '../../routes';
 
 import styles from './AboutPage.module.css';
 
-const AboutPage = (): React.ReactElement => {
+const AboutPage = (): JSX.Element => {
   return (
-    <div className={styles.about}>
+    <main className={styles.about}>
       <h1 className={styles.title}>About</h1>
       <p className={styles.info}>Author: Alena Danilchenko</p>
       <p className={styles.info}>
@@ -18,10 +20,10 @@ const AboutPage = (): React.ReactElement => {
           RS School React Course
         </a>
       </p>
-      <Link to="/" className={styles.back}>
+      <Link to={ROUTES.HOME} className={styles.back}>
         ← Back to Home
       </Link>
-    </div>
+    </main>
   );
 };
 
