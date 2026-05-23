@@ -7,6 +7,23 @@
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.4),
     0 0 10px rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.card__checkbox {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.card__selected {
+  border-color: rgb(62, 169, 188);
+  box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.4),
+          0 0 10px rgba(62, 169, 188, 0.3);
 }
 
 .card img {
