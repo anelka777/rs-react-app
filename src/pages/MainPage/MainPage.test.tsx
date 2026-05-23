@@ -1,15 +1,32 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { createMemoryRouter, RouterProvider } from 'react-router';
 
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
 import { fetchCharacters } from '../../api/character';
 import { mockFetchResult } from '../../test-utils/mockData';
+import CharacterDetail from '../CharacterDetail/CharacterDetail';
 
 import MainPage from './MainPage';
 
 vi.mock('../../api/character');
 
 const mockFetchCharacters = vi.mocked(fetchCharacters);
+
+const renderMainPage = (path = '/page/1'): ReturnType<typeof render> => {
+  const router = createMemoryRouter(
+    [
+      {
+        path: '/page/:page',
+        element: <MainPage />,
+        children: [
+          { path: 'details/:detailsId', element: <CharacterDetail /> },
+        ],
+      },
+    ],
+    { initialEntries: [path] }
+  );
+  return render(<RouterProvider router={router} />);
+};
 
 beforeEach(() => {
   localStorage.clear();
@@ -24,11 +41,7 @@ afterEach(() => {
 describe('MainPage', () => {
   it('fetches and displays characters on mount', async () => {
     mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage();
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
@@ -36,11 +49,7 @@ describe('MainPage', () => {
 
   it('shows spinner while loading', async () => {
     mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage();
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
@@ -49,11 +58,7 @@ describe('MainPage', () => {
 
   it('loads with search term from URL', async () => {
     mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    render(
-      <MemoryRouter initialEntries={['/?page=1&search=Rick']}>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage('/page/1?search=Rick');
     await waitFor(() => {
       expect(mockFetchCharacters).toHaveBeenCalledWith('Rick', 1);
     });
@@ -61,11 +66,7 @@ describe('MainPage', () => {
 
   it('shows error message when API fails', async () => {
     mockFetchCharacters.mockRejectedValue(new Error('Error: 404'));
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage();
     await waitFor(() => {
       expect(
         screen.getByText('Character not found. Try another name!')
@@ -75,24 +76,27 @@ describe('MainPage', () => {
 
   it('throws error when Simulate Error button is clicked', () => {
     mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    render(
-      <MemoryRouter>
-        <ErrorBoundary>
-          <MainPage />
-        </ErrorBoundary>
-      </MemoryRouter>
+    const router = createMemoryRouter(
+      [
+        {
+          path: '/page/:page/*',
+          element: (
+            <ErrorBoundary>
+              <MainPage />
+            </ErrorBoundary>
+          ),
+        },
+      ],
+      { initialEntries: ['/page/1'] }
     );
+    render(<RouterProvider router={router} />);
     fireEvent.click(screen.getByText('Simulate Error'));
     expect(screen.getByText('Something went wrong 😢')).toBeInTheDocument();
   });
 
   it('calls fetchCharacters with search term when user searches', async () => {
     mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage();
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
@@ -106,22 +110,15 @@ describe('MainPage', () => {
 
   it('handles non-Error exception', async () => {
     mockFetchCharacters.mockRejectedValue('string error');
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage();
     await waitFor(() => {
       expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     });
   });
+
   it('handles non-Error exception when searching', async () => {
     mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage();
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
@@ -133,13 +130,10 @@ describe('MainPage', () => {
       expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     });
   });
+
   it('navigates to details when card is clicked', async () => {
     mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    render(
-      <MemoryRouter initialEntries={['/?page=1&search=']}>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage('/page/1');
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
@@ -151,14 +145,13 @@ describe('MainPage', () => {
 
   it('closes detail panel when close button is clicked', async () => {
     mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    render(
-      <MemoryRouter initialEntries={['/?page=1&search=&details=1']}>
-        <MainPage />
-      </MemoryRouter>
-    );
+    renderMainPage('/page/1/details/1');
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByText('✕'));
+    await waitFor(() => {
+      expect(screen.queryByText('✕')).not.toBeInTheDocument();
+    });
   });
 });

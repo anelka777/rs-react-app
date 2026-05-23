@@ -31,7 +31,7 @@ export const fetchCharacters = async (
 };
 
 export const fetchCharacterById = async (
-  id: number
+  id: string
 ): Promise<CharacterDetail> => {
   const response = await fetch(`${BASE_URL}/character/${id}`);
   if (!response.ok) {

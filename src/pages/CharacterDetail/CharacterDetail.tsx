@@ -1,6 +1,6 @@
-import type React from 'react';
+import type { JSX } from 'react';
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router';
+import { useParams } from 'react-router';
 
 import { fetchCharacterById } from '../../api/character';
 import Spinner from '../../components/Spinner/Spinner';
@@ -8,16 +8,15 @@ import type { CharacterDetail as CharacterDetailType } from '../../types/charact
 
 import styles from './CharacterDetail.module.css';
 
-const CharacterDetail = (): React.ReactElement => {
-  const [searchParams] = useSearchParams();
-  const id = Number(searchParams.get('details'));
+const CharacterDetail = (): JSX.Element => {
+  const { detailsId } = useParams();
 
   const [character, setCharacter] = useState<CharacterDetailType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(!!id);
+  const [isLoading, setIsLoading] = useState<boolean>(!!detailsId);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) {
+    if (!detailsId) {
       return;
     }
 
@@ -25,7 +24,7 @@ const CharacterDetail = (): React.ReactElement => {
       setIsLoading(true);
       setError(null);
       try {
-        const data = await fetchCharacterById(id);
+        const data = await fetchCharacterById(detailsId);
         setCharacter(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -35,9 +34,9 @@ const CharacterDetail = (): React.ReactElement => {
     };
 
     load();
-  }, [id]);
+  }, [detailsId]);
 
-  if (!id) {
+  if (!detailsId) {
     return <></>;
   }
 

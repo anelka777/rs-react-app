@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { Routes, Route } from 'react-router';
+import { Routes, Route, Navigate } from 'react-router';
 
 import Layout from './components/Layout/Layout';
 import MainPage from './pages/MainPage/MainPage';
@@ -11,9 +11,9 @@ const App = (): JSX.Element => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route element={<MainPage />}>
-          <Route index element={null} />
-          <Route path="details" element={<CharacterDetail />} />
+        <Route index element={<Navigate to="/page/1" replace />} />
+        <Route path="page/:page" element={<MainPage />}>
+          <Route path="details/:detailsId" element={<CharacterDetail />} />
         </Route>
         <Route path="about" element={<AboutPage />} />
         <Route path="*" element={<NotFoundPage />} />

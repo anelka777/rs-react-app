@@ -1,6 +1,6 @@
-import type React from 'react';
+import type { JSX } from 'react';
 import { useState, useEffect } from 'react';
-import { useSearchParams, Outlet, useNavigate } from 'react-router';
+import { useSearchParams, Outlet, useNavigate, useParams } from 'react-router';
 
 import Search from '../../components/Search/Search';
 import CardList from '../../components/CardList/CardList';
@@ -11,18 +11,19 @@ import type { Character } from '../../types/character';
 
 import styles from './MainPage.module.css';
 
-const MainPage = (): React.ReactElement => {
+const MainPage = (): JSX.Element => {
+  const { page: pageParam, detailsId } = useParams();
+  const page = Number(pageParam) || 1;
+
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [shouldThrow, setShouldThrow] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [, setStoredTerm] = useLocalStorage('searchTerm', '');
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const page = Number(searchParams.get('page')) || 1;
   const search = searchParams.get('search') ?? '';
-  const details = searchParams.get('details');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,21 +42,19 @@ const MainPage = (): React.ReactElement => {
     };
 
     load();
-  }, [searchParams]);
+  }, [searchParams, page]);
 
   const handleSearch = (searchTerm: string): void => {
     setStoredTerm(searchTerm);
-    setSearchParams({ page: '1', search: searchTerm });
+    navigate(`/page/1?search=${searchTerm}`);
   };
 
   const handleCardClick = (id: number): void => {
-    setSearchParams({ page: String(page), search, details: String(id) });
-    navigate(`/details?page=${page}&search=${search}&details=${id}`);
+    navigate(`/page/${page}/details/${id}?search=${search}`);
   };
 
   const handleCloseDetail = (): void => {
-    setSearchParams({ page: String(page), search });
-    navigate(`/?page=${page}&search=${search}`);
+    navigate(`/page/${page}?search=${search}`);
   };
 
   if (shouldThrow) {
@@ -69,7 +68,7 @@ const MainPage = (): React.ReactElement => {
         <Search onSearch={handleSearch} />
       </section>
 
-      <div className={details ? styles.split_layout : ''}>
+      <div className={detailsId ? styles.split_layout : ''}>
         <section className={styles.results_section}>
           <CardList
             characters={characters}
@@ -78,7 +77,7 @@ const MainPage = (): React.ReactElement => {
             onCardClick={handleCardClick}
           />
         </section>
-        {details && (
+        {detailsId && (
           <section className={styles.detail_section}>
             <button className={styles.close_button} onClick={handleCloseDetail}>
               ✕
@@ -93,7 +92,7 @@ const MainPage = (): React.ReactElement => {
           page={page}
           totalPages={totalPages}
           onPageChange={(newPage) =>
-            setSearchParams({ page: String(newPage), search })
+            navigate(`/page/${newPage}?search=${search}`)
           }
         />
       )}
