@@ -1,6 +1,6 @@
 import type React from 'react';
 import { useState, useEffect } from 'react';
-import { useSearchParams, Outlet, useNavigate } from 'react-router-dom';
+import { useSearchParams, Outlet, useNavigate } from 'react-router';
 
 import Search from '../../components/Search/Search';
 import CardList from '../../components/CardList/CardList';

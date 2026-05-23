@@ -1,5 +1,5 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
 import { fetchCharacters } from '../../api/character';
