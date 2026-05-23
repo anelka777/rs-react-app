@@ -72,7 +72,7 @@ describe('CharacterDetail', () => {
 
   it('returns nothing when no id in URL', () => {
     renderCharacterDetail();
-    expect(screen.queryByText('No character found')).not.toBeInTheDocument();
     expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
+    expect(screen.getByText('No character found')).toBeInTheDocument();
   });
 });

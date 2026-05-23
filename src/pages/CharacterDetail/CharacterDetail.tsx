@@ -36,10 +36,6 @@ const CharacterDetail = (): JSX.Element => {
     load();
   }, [detailsId]);
 
-  if (!detailsId) {
-    return <></>;
-  }
-
   if (isLoading) {
     return <Spinner />;
   }
