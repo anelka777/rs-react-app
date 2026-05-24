@@ -1,12 +1,10 @@
 .card {
-  background: #1a1f2e;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 16px;
   text-align: center;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.4),
-    0 0 10px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.05);
   position: relative;
 }
 
@@ -20,10 +18,8 @@
 }
 
 .card__selected {
-  border-color: rgb(62, 169, 188);
-  box-shadow:
-          0 4px 12px rgba(0, 0, 0, 0.4),
-          0 0 10px rgba(62, 169, 188, 0.3);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 10px rgba(62, 169, 188, 0.3);
 }
 
 .card img {
@@ -34,15 +30,15 @@
 .card h3 {
   text-transform: capitalize;
   margin: 8px 0 4px;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .card p {
-  color: #9ca3af;
+  color: var(--text-secondary);
   font-size: 14px;
   margin: 4px 0;
 }
 
 .card__label {
-  color: rgb(62, 169, 188);
+  color: var(--accent);
 }

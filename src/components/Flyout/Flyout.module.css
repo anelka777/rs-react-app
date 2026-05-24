@@ -5,13 +5,13 @@
     align-items: center;
     gap: 16px;
     padding: 16px 24px;
-    background: #1a1f2e;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
     z-index: 100;
 }
 
 .flyout p {
-    color: #ffffff;
+    color: var(--text-primary);
     margin: 0;
     flex: 1;
 }
@@ -26,11 +26,11 @@
 
 .flyout button:first-of-type {
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
 }
 
 .flyout button:last-of-type {
-    background: rgb(62, 169, 188);
+    background: var(--accent);
     color: #ffffff;
 }
