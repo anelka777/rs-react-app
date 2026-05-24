@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
 import { store } from './store/store';
+import ThemeProvider from './context/ThemeProvider';
 
 const rootElement = document.getElementById('root');
 
@@ -19,7 +20,9 @@ createRoot(rootElement).render(
     <Provider store={store}>
       <BrowserRouter>
         <ErrorBoundary>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </ErrorBoundary>
       </BrowserRouter>
     </Provider>
