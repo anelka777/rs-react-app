@@ -1,8 +1,11 @@
+import { type JSX } from 'react';
 import { Outlet, NavLink } from 'react-router';
+
+import Flyout from '../Flyout/Flyout';
 
 import styles from './Layout.module.css';
 
-const Layout = (): React.ReactElement => {
+const Layout = (): JSX.Element => {
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
@@ -32,6 +35,7 @@ const Layout = (): React.ReactElement => {
       <main>
         <Outlet />
       </main>
+      <Flyout />
     </div>
   );
 };

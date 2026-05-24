@@ -1,0 +1,36 @@
+.flyout {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    background: #1a1f2e;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 100;
+}
+
+.flyout p {
+    color: #ffffff;
+    margin: 0;
+    flex: 1;
+}
+
+.flyout button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.flyout button:first-of-type {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+
+.flyout button:last-of-type {
+    background: rgb(62, 169, 188);
+    color: #ffffff;
+}
