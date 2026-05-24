@@ -19,11 +19,11 @@ const Flyout = (): JSX.Element | null => {
   };
 
   const handleDownload = (): void => {
-    const headers = 'name,status,species,gender,location\n';
+    const headers = 'name,status,species,gender,location,url\n';
     const rows = items
       .map(
         (c) =>
-          `${c.name},${c.status},${c.species},${c.gender},${c.location.name}`
+          `${c.name},${c.status},${c.species},${c.gender},${c.location.name},https://rickandmortyapi.com/api/character/${c.id}`
       )
       .join('\n');
 
