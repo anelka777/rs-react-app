@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 
-import { fetchCharacterById } from '../api/character';
+import { useGetCharacterByIdQuery } from '../store/characterApi';
 import type { CharacterDetail } from '../types/character';
 
 interface UseCharacterDetailResult {
@@ -13,32 +12,15 @@ interface UseCharacterDetailResult {
 const useCharacterDetail = (): UseCharacterDetailResult => {
   const { detailsId } = useParams();
 
-  const [character, setCharacter] = useState<CharacterDetail | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useGetCharacterByIdQuery(detailsId ?? '', {
+    skip: !detailsId,
+  });
 
-  useEffect(() => {
-    if (!detailsId) {
-      return;
-    }
-
-    const load = async (): Promise<void> => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await fetchCharacterById(detailsId);
-        setCharacter(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Something went wrong');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    load();
-  }, [detailsId]);
-
-  return { character, isLoading, error };
+  return {
+    character: data ?? null,
+    isLoading,
+    error: error ? 'Something went wrong. Please try again.' : null,
+  };
 };
 
 export default useCharacterDetail;
