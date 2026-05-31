@@ -25,7 +25,7 @@ const MainPage = (): JSX.Element => {
 
   const search = searchParams.get('search') ?? storedTerm;
 
-  const { data, isLoading, error } = useGetCharactersQuery({
+  const { data, isLoading, isFetching, error } = useGetCharactersQuery({
     search,
     page,
   });
@@ -60,14 +60,16 @@ const MainPage = (): JSX.Element => {
       <h1 className={styles.app__title}>Rick and Morty Characters</h1>
       <section className={styles.search_section}>
         <Search onSearch={handleSearch} />
-        <button onClick={handleRefresh}>Refresh</button>
+        <button className={styles.refresh_button} onClick={handleRefresh}>
+          Refresh
+        </button>
       </section>
 
       <div className={detailsId ? styles.split_layout : ''}>
         <section className={styles.results_section}>
           <CardList
             characters={characters}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             error={errorMessage}
             onCardClick={handleCardClick}
           />
