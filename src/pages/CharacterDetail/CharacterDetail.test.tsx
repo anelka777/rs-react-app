@@ -1,25 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
-import { vi } from 'vitest';
+import { Provider } from 'react-redux';
+import { http, HttpResponse } from 'msw';
 
-import { fetchCharacterById } from '../../api/character';
+import { createTestStore } from '../../test-utils/renderWithProviders';
+import { server } from '../../test-utils/server';
 
 import CharacterDetail from './CharacterDetail';
-
-vi.mock('../../api/character');
-
-const mockFetchCharacterById = vi.mocked(fetchCharacterById);
-
-const mockCharacter = {
-  id: 1,
-  name: 'Rick Sanchez',
-  status: 'Alive',
-  species: 'Human',
-  gender: 'Male',
-  location: { name: 'Citadel of Ricks' },
-  image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-  episode: ['ep1', 'ep2', 'ep3'],
-};
 
 const renderCharacterDetail = (
   detailsId?: string
@@ -32,11 +19,14 @@ const renderCharacterDetail = (
     ],
     { initialEntries: [path] }
   );
-  return render(<RouterProvider router={router} />);
+  return render(
+    <Provider store={createTestStore()}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
 };
 
 beforeEach(() => {
-  mockFetchCharacterById.mockClear();
   vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
@@ -46,27 +36,29 @@ afterEach(() => {
 
 describe('CharacterDetail', () => {
   it('shows spinner while loading', () => {
-    mockFetchCharacterById.mockResolvedValue(mockCharacter);
     renderCharacterDetail('1');
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
   it('displays character details after loading', async () => {
-    mockFetchCharacterById.mockResolvedValue(mockCharacter);
     renderCharacterDetail('1');
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
     expect(screen.getByText(/Alive/)).toBeInTheDocument();
     expect(screen.getByText(/Human/)).toBeInTheDocument();
-    expect(screen.getByText(/3/)).toBeInTheDocument();
+    expect(screen.getByText(/1/)).toBeInTheDocument();
   });
 
   it('shows error message when API fails', async () => {
-    mockFetchCharacterById.mockRejectedValue(new Error('Error: 404'));
+    server.use(
+      http.get('https://rickandmortyapi.com/api/character/:id', () => {
+        return HttpResponse.json({ error: 'Not found' }, { status: 404 });
+      })
+    );
     renderCharacterDetail('1');
     await waitFor(() => {
-      expect(screen.getByText(/Error/)).toBeInTheDocument();
+      expect(screen.getByText(/Something went wrong/)).toBeInTheDocument();
     });
   });
 
