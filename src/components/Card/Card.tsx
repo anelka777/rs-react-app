@@ -15,7 +15,7 @@ interface CardProps {
 const Card = ({ character, onClick }: CardProps): JSX.Element => {
   const dispatch = useDispatch();
   const isSelected = useSelector((state: RootState) =>
-    state.selected.items.some((c) => c.id === character.id)
+    state.selectedCharacters.items.some((c) => c.id === character.id)
   );
 
   const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>): void => {

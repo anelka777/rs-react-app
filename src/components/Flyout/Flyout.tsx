@@ -8,7 +8,9 @@ import styles from './Flyout.module.css';
 
 const Flyout = (): JSX.Element | null => {
   const dispatch = useDispatch();
-  const items = useSelector((state: RootState) => state.selected.items);
+  const items = useSelector(
+    (state: RootState) => state.selectedCharacters.items
+  );
 
   if (items.length === 0) {
     return null;
