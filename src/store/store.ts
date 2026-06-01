@@ -5,7 +5,7 @@ import { characterApi } from './characterApi';
 
 export const store = configureStore({
   reducer: {
-    selected: selectedReducer,
+    selectedCharacters: selectedReducer,
     [characterApi.reducerPath]: characterApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

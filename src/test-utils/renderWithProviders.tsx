@@ -15,7 +15,7 @@ type StoreType = typeof globalStore;
 export const createTestStore = (): StoreType =>
   configureStore({
     reducer: {
-      selected: selectedReducer,
+      selectedCharacters: selectedReducer,
       [characterApi.reducerPath]: characterApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
