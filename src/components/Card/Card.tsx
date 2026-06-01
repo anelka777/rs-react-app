@@ -1,9 +1,7 @@
 import type { JSX } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import type { Character } from '../../types/character';
-import type { RootState } from '../../store/store';
-import { toggleCharacter } from '../../store/selectedSlice';
+import useCharacterSelection from '../../hooks/useCharacterSelection';
 
 import styles from './Card.module.css';
 
@@ -13,15 +11,8 @@ interface CardProps {
 }
 
 const Card = ({ character, onClick }: CardProps): JSX.Element => {
-  const dispatch = useDispatch();
-  const isSelected = useSelector((state: RootState) =>
-    state.selectedCharacters.items.some((c) => c.id === character.id)
-  );
+  const { isSelected, handleCheckbox } = useCharacterSelection(character);
 
-  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    e.stopPropagation();
-    dispatch(toggleCharacter(character));
-  };
   return (
     <div
       className={`${styles.card} ${isSelected ? styles.card__selected : ''}`}
