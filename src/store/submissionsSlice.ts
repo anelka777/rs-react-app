@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type { Submission } from '../types';
+import type { Submission } from '../types/type';
 
 interface SubmissionsState {
   submissions: Submission[];

@@ -1,13 +1,6 @@
-export interface FormData {
-  name: string;
-  email: string;
-  gender: 'male' | 'female';
-  termsAccepted: boolean;
-  image: string;
-  password: string;
-  confirmPassword: string;
-  country: string;
-}
+import type { FormData } from '../schemas/formSchema';
+
+export type { FormData };
 
 export interface Submission extends FormData {
   id: string;
