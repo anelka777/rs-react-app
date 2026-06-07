@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { type ReactElement } from 'react';
 
 import Modal from './components/Modal/Modal';
+import UncontrolledForm from './components/UncontrolledForm/UncontrolledForm';
 
 const App = (): ReactElement => {
   const [isUncontrolledOpen, setIsUncontrolledOpen] = useState(false);
@@ -20,7 +21,7 @@ const App = (): ReactElement => {
         onClose={() => setIsUncontrolledOpen(false)}
         title="Uncontrolled Form"
       >
-        <p>Uncontrolled form will be here</p>
+        <UncontrolledForm onClose={() => setIsUncontrolledOpen(false)} />
       </Modal>
 
       <Modal
