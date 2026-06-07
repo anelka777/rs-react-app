@@ -5,7 +5,7 @@ export const formSchema = z
     name: z
       .string()
       .min(1, 'Name is required')
-      .refine((val) => val[0] === val[0].toUpperCase(), {
+      .refine((val) => val.length > 0 && val[0] === val[0].toUpperCase(), {
         message: 'First letter must be uppercase',
       }),
 

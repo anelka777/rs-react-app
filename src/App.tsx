@@ -3,6 +3,7 @@ import { type ReactElement } from 'react';
 
 import Modal from './components/Modal/Modal';
 import UncontrolledForm from './components/UncontrolledForm/UncontrolledForm';
+import HookForm from './components/HookForm/HookForm';
 
 const App = (): ReactElement => {
   const [isUncontrolledOpen, setIsUncontrolledOpen] = useState(false);
@@ -29,7 +30,7 @@ const App = (): ReactElement => {
         onClose={() => setIsHookFormOpen(false)}
         title="React Hook Form"
       >
-        <p>Hook form will be here</p>
+        <HookForm onClose={() => setIsHookFormOpen(false)} />
       </Modal>
     </div>
   );
