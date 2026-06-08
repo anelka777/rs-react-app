@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 import { addSubmission } from '../../store/submissionsSlice';
-import { formSchema } from '../../schemas/formSchema';
+import { createFormSchema } from '../../schemas/formSchema';
 import { getPasswordStrength } from '../../utils/passwordStrength';
 import imageToBase64 from '../../utils/imageToBase64';
 import type { PasswordStrength } from '../../utils/passwordStrength';
@@ -37,9 +37,24 @@ const UncontrolledForm = ({
 
     const imageFile = imageRef.current?.files?.[0];
     let imageBase64 = '';
+    const preErrors: Record<string, string> = {};
 
     if (imageFile) {
-      imageBase64 = await imageToBase64(imageFile);
+      const allowedTypes = ['image/png', 'image/jpeg'];
+      const maxSize = 5 * 1024 * 1024;
+
+      if (!allowedTypes.includes(imageFile.type)) {
+        preErrors.image = 'Only PNG and JPEG images are allowed';
+      } else if (imageFile.size > maxSize) {
+        preErrors.image = 'Image size must be less than 5MB';
+      } else {
+        imageBase64 = await imageToBase64(imageFile);
+      }
+    }
+
+    if (Object.keys(preErrors).length > 0) {
+      setErrors(preErrors);
+      return;
     }
 
     const rawData = {
@@ -54,7 +69,7 @@ const UncontrolledForm = ({
       image: imageBase64,
     };
 
-    const result = formSchema.safeParse(rawData);
+    const result = createFormSchema(countries).safeParse(rawData);
 
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};

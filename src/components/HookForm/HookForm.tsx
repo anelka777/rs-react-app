@@ -4,7 +4,7 @@ import { type ReactElement, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../store';
 import { addSubmission } from '../../store/submissionsSlice';
-import { formSchema } from '../../schemas/formSchema';
+import { createFormSchema } from '../../schemas/formSchema';
 import { getPasswordStrength } from '../../utils/passwordStrength';
 import imageToBase64 from '../../utils/imageToBase64';
 import type { PasswordStrength } from '../../utils/passwordStrength';
@@ -18,13 +18,15 @@ const HookForm = ({ onClose }: { onClose: () => void }): ReactElement => {
   const [passwordStrength, setPasswordStrength] =
     useState<PasswordStrength | null>(null);
 
+  const schema = createFormSchema(countries);
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors, isValid },
   } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(schema),
     mode: 'onChange',
   });
 
@@ -195,6 +197,15 @@ const HookForm = ({ onClose }: { onClose: () => void }): ReactElement => {
               onChange={async (e) => {
                 const file = e.target.files?.[0];
                 if (file) {
+                  const allowedTypes = ['image/png', 'image/jpeg'];
+                  const maxSize = 5 * 1024 * 1024;
+                  if (
+                    !allowedTypes.includes(file.type) ||
+                    file.size > maxSize
+                  ) {
+                    field.onChange('');
+                    return;
+                  }
                   const base64 = await imageToBase64(file);
                   field.onChange(base64);
                 }

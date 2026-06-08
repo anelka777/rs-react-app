@@ -84,4 +84,10 @@ export default defineConfig([
       'max-lines-per-function': ['warn', { max: 50 }],
     },
   },
+  {
+    files: ['src/schemas/*.ts'],
+    rules: {
+      '@typescript-eslint/explicit-function-return-type': 'off',
+    },
+  },
 ]);
