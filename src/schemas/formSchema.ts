@@ -36,7 +36,7 @@ export const createFormSchema = (countries: string[]) =>
           { message: 'Invalid email' }
         ),
 
-      gender: z.enum(['male', 'female', 'other'], {
+      gender: z.enum(['male', 'female'], {
         message: 'Please select a gender',
       }),
 
