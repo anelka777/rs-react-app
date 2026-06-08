@@ -1,0 +1,81 @@
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.field label {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.field input,
+.field select {
+    padding: 8px 12px;
+    border: 1px solid #e5e4e7;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+    border-color: #aa3bff;
+}
+
+.fieldCheckbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.error {
+    color: #e53e3e;
+    font-size: 12px;
+}
+
+.strength {
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+.strengthList {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.met {
+    color: #38a169;
+}
+
+.unmet {
+    color: #e53e3e;
+}
+
+.strength0 { color: #e53e3e; }
+.strength1 { color: #e53e3e; }
+.strength2 { color: #ed8936; }
+.strength3 { color: #38a169; }
+.strength4 { color: #38a169; font-weight: bold; }
+
+.submitButton {
+    width: 100%;
+    padding: 10px;
+    background: #aa3bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    background: #9333ea;
+}
