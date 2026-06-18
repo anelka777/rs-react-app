@@ -1,6 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
-
-import type { RootState } from '../store/store';
+import { useAppDispatch, useAppSelector } from '../store/store';
 import { toggleCharacter } from '../store/selectedSlice';
 import type { Character } from '../types/character';
 
@@ -12,8 +10,8 @@ interface UseCharacterSelectionReturn {
 const useCharacterSelection = (
   character: Character
 ): UseCharacterSelectionReturn => {
-  const dispatch = useDispatch();
-  const isSelected = useSelector((state: RootState) =>
+  const dispatch = useAppDispatch();
+  const isSelected = useAppSelector((state) =>
     state.selectedCharacters.items.some((c) => c.id === character.id)
   );
 

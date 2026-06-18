@@ -1,15 +1,14 @@
 import type { JSX } from 'react';
 import { useState } from 'react';
 import { useSearchParams, Outlet, useNavigate, useParams } from 'react-router';
-import { useDispatch } from 'react-redux';
 
+import { useAppDispatch } from '../../store/store';
 import Search from '../../components/Search/Search';
 import CardList from '../../components/CardList/CardList';
 import Pagination from '../../components/Pagination/Pagination';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { useGetCharactersQuery } from '../../store/characterApi';
 import { characterApi } from '../../store/characterApi';
-import type { AppDispatch } from '../../store/store';
 
 import styles from './MainPage.module.css';
 
@@ -21,7 +20,7 @@ const MainPage = (): JSX.Element => {
   const [storedTerm] = useLocalStorage('searchTerm', '');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const search = searchParams.get('search') ?? storedTerm;
 
