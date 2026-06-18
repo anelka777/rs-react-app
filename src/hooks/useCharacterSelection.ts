@@ -4,7 +4,7 @@ import type { Character } from '../types/character';
 
 interface UseCharacterSelectionReturn {
   isSelected: boolean;
-  handleCheckbox: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleCheckbox: () => void;
 }
 
 const useCharacterSelection = (
@@ -15,8 +15,7 @@ const useCharacterSelection = (
     state.selectedCharacters.items.some((c) => c.id === character.id)
   );
 
-  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    e.stopPropagation();
+  const handleCheckbox = (): void => {
     dispatch(toggleCharacter(character));
   };
 
