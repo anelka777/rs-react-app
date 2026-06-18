@@ -23,8 +23,12 @@ const Flyout = (): JSX.Element | null => {
   return (
     <div className={styles.flyout}>
       <p>Selected: {items.length}</p>
-      <button onClick={handleUnselectAll}>Unselect All</button>
-      <button onClick={handleDownload}>Download</button>
+      <button onClick={handleUnselectAll} disabled={!items.length}>
+        Unselect All
+      </button>
+      <button onClick={handleDownload} disabled={!items.length}>
+        Download
+      </button>
     </div>
   );
 };
