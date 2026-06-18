@@ -87,3 +87,18 @@
     color: var(--text-primary);
     background: rgba(255, 255, 255, 0.1);
 }
+
+.refresh_button {
+    padding: 8px 16px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.refresh_button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}

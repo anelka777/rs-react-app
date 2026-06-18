@@ -13,34 +13,35 @@ beforeEach(() => {
 
 describe('Flyout', () => {
   it('does not render when no items selected', () => {
-    const { container } = renderWithProviders(<Flyout />);
+    const { container } = renderWithProviders(<Flyout />, { store });
     expect(container.firstChild).toBeNull();
   });
 
   it('renders when items are selected', () => {
     store.dispatch(toggleCharacter(mockCharacters[0]));
-    renderWithProviders(<Flyout />);
+    renderWithProviders(<Flyout />, { store });
     expect(screen.getByText('Selected: 1')).toBeInTheDocument();
   });
 
   it('shows unselect all button', () => {
     store.dispatch(toggleCharacter(mockCharacters[0]));
-    renderWithProviders(<Flyout />);
+    renderWithProviders(<Flyout />, { store });
     expect(screen.getByText('Unselect All')).toBeInTheDocument();
   });
 
   it('unselects all when button clicked', () => {
     store.dispatch(toggleCharacter(mockCharacters[0]));
-    renderWithProviders(<Flyout />);
+    renderWithProviders(<Flyout />, { store });
     fireEvent.click(screen.getByText('Unselect All'));
     expect(screen.queryByText('Selected: 1')).not.toBeInTheDocument();
   });
 
   it('download button is present', () => {
     store.dispatch(toggleCharacter(mockCharacters[0]));
-    renderWithProviders(<Flyout />);
+    renderWithProviders(<Flyout />, { store });
     expect(screen.getByText('Download')).toBeInTheDocument();
   });
+
   it('triggers download when download button clicked', () => {
     const createObjectURL = vi.fn(() => 'blob:url');
     const revokeObjectURL = vi.fn();
@@ -48,7 +49,7 @@ describe('Flyout', () => {
     globalThis.URL.revokeObjectURL = revokeObjectURL;
 
     store.dispatch(toggleCharacter(mockCharacters[0]));
-    renderWithProviders(<Flyout />);
+    renderWithProviders(<Flyout />, { store });
 
     const clickMock = vi.fn();
     const anchor = { href: '', download: '', click: clickMock };

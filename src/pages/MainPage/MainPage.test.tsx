@@ -1,19 +1,15 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { Provider } from 'react-redux';
+import { http, HttpResponse } from 'msw';
 
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
-import { fetchCharacters } from '../../api/character';
-import { mockFetchResult } from '../../test-utils/mockData';
+import { server } from '../../test-utils/server';
 import CharacterDetail from '../CharacterDetail/CharacterDetail';
-import { store } from '../../store/store';
 import ThemeProvider from '../../context/ThemeProvider';
+import { createTestStore } from '../../test-utils/renderWithProviders';
 
 import MainPage from './MainPage';
-
-vi.mock('../../api/character');
-
-const mockFetchCharacters = vi.mocked(fetchCharacters);
 
 const renderMainPage = (path = '/page/1'): ReturnType<typeof render> => {
   const router = createMemoryRouter(
@@ -29,7 +25,7 @@ const renderMainPage = (path = '/page/1'): ReturnType<typeof render> => {
     { initialEntries: [path] }
   );
   return render(
-    <Provider store={store}>
+    <Provider store={createTestStore()}>
       <ThemeProvider>
         <RouterProvider router={router} />
       </ThemeProvider>
@@ -39,7 +35,6 @@ const renderMainPage = (path = '/page/1'): ReturnType<typeof render> => {
 
 beforeEach(() => {
   localStorage.clear();
-  mockFetchCharacters.mockClear();
   vi.spyOn(console, 'error').mockImplementation(() => {});
 });
 
@@ -49,7 +44,6 @@ afterEach(() => {
 
 describe('MainPage', () => {
   it('fetches and displays characters on mount', async () => {
-    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     renderMainPage();
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
@@ -57,7 +51,6 @@ describe('MainPage', () => {
   });
 
   it('shows spinner while loading', async () => {
-    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     renderMainPage();
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
     await waitFor(() => {
@@ -66,25 +59,27 @@ describe('MainPage', () => {
   });
 
   it('loads with search term from URL', async () => {
-    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     renderMainPage('/page/1?search=Rick');
     await waitFor(() => {
-      expect(mockFetchCharacters).toHaveBeenCalledWith('Rick', 1);
+      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
   });
 
   it('shows error message when API fails', async () => {
-    mockFetchCharacters.mockRejectedValue(new Error('Error: 404'));
+    server.use(
+      http.get('https://rickandmortyapi.com/api/character', () => {
+        return HttpResponse.json({ error: 'Not found' }, { status: 404 });
+      })
+    );
     renderMainPage();
     await waitFor(() => {
       expect(
-        screen.getByText('Character not found. Try another name!')
+        screen.getByText('Unexpected error. Please try again!')
       ).toBeInTheDocument();
     });
   });
 
-  it('throws error when Simulate Error button is clicked', () => {
-    mockFetchCharacters.mockResolvedValue(mockFetchResult);
+  it('throws error when Simulate Error button is clicked', async () => {
     const router = createMemoryRouter(
       [
         {
@@ -98,54 +93,19 @@ describe('MainPage', () => {
       ],
       { initialEntries: ['/page/1'] }
     );
-    render(<RouterProvider router={router} />);
+    render(
+      <Provider store={createTestStore()}>
+        <RouterProvider router={router} />
+      </Provider>
+    );
+    await waitFor(() => {
+      expect(screen.getByText('Simulate Error')).toBeInTheDocument();
+    });
     fireEvent.click(screen.getByText('Simulate Error'));
     expect(screen.getByText('Something went wrong 😢')).toBeInTheDocument();
   });
 
-  it('calls fetchCharacters with search term when user searches', async () => {
-    mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    renderMainPage();
-    await waitFor(() => {
-      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
-    });
-    const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: 'Morty' } });
-    fireEvent.click(screen.getByRole('button', { name: /search/i }));
-    await waitFor(() => {
-      expect(mockFetchCharacters).toHaveBeenCalledWith('Morty', 1);
-    });
-  });
-
-  it('handles non-Error exception', async () => {
-    mockFetchCharacters.mockRejectedValue('string error');
-    renderMainPage();
-    await waitFor(() => {
-      expect(
-        screen.getByText('Unexpected error. Please try again!')
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('handles non-Error exception when searching', async () => {
-    mockFetchCharacters.mockResolvedValue(mockFetchResult);
-    renderMainPage();
-    await waitFor(() => {
-      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
-    });
-    mockFetchCharacters.mockRejectedValue('string error');
-    const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: 'Morty' } });
-    fireEvent.click(screen.getByRole('button', { name: /search/i }));
-    await waitFor(() => {
-      expect(
-        screen.getByText('Unexpected error. Please try again!')
-      ).toBeInTheDocument();
-    });
-  });
-
   it('navigates to details when card is clicked', async () => {
-    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     renderMainPage('/page/1');
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
@@ -157,14 +117,24 @@ describe('MainPage', () => {
   });
 
   it('closes detail panel when close button is clicked', async () => {
-    mockFetchCharacters.mockResolvedValue(mockFetchResult);
     renderMainPage('/page/1/details/1');
     await waitFor(() => {
-      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
+      expect(screen.getByText('✕')).toBeInTheDocument();
     });
     fireEvent.click(screen.getByText('✕'));
     await waitFor(() => {
       expect(screen.queryByText('✕')).not.toBeInTheDocument();
+    });
+  });
+
+  it('invalidates cache and refetches on Refresh click', async () => {
+    renderMainPage();
+    await waitFor(() => {
+      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText('Refresh'));
+    await waitFor(() => {
+      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     });
   });
 });

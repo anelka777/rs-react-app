@@ -1,13 +1,14 @@
 import type { JSX } from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSearchParams, Outlet, useNavigate, useParams } from 'react-router';
 
+import { useAppDispatch } from '../../store/store';
 import Search from '../../components/Search/Search';
 import CardList from '../../components/CardList/CardList';
 import Pagination from '../../components/Pagination/Pagination';
-import { fetchCharacters } from '../../api/character';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import type { Character } from '../../types/character';
+import { useGetCharactersQuery } from '../../store/characterApi';
+import { characterApi } from '../../store/characterApi';
 
 import styles from './MainPage.module.css';
 
@@ -15,40 +16,23 @@ const MainPage = (): JSX.Element => {
   const { page: pageParam, detailsId } = useParams();
   const page = Number(pageParam) || 1;
 
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [shouldThrow, setShouldThrow] = useState<boolean>(false);
-  const [totalPages, setTotalPages] = useState<number>(1);
   const [storedTerm] = useLocalStorage('searchTerm', '');
   const [searchParams] = useSearchParams();
-
-  const search = searchParams.get('search') ?? '';
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (!searchParams.get('search') && storedTerm) {
-      navigate(`/page/${page}?search=${storedTerm}`, { replace: true });
-    }
-  }, []);
+  const search = searchParams.get('search') ?? storedTerm;
 
-  useEffect(() => {
-    const load = async (): Promise<void> => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await fetchCharacters(search, page);
-        setCharacters(data.characters);
-        setTotalPages(data.totalPages);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Something went wrong');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const { data, isLoading, isFetching, error } = useGetCharactersQuery({
+    search,
+    page,
+  });
 
-    load();
-  }, [searchParams, page]);
+  const characters = data?.characters ?? [];
+  const totalPages = data?.totalPages ?? 1;
+
+  const errorMessage = error ? 'Something went wrong. Please try again.' : null;
 
   const handleSearch = (searchTerm: string): void => {
     navigate(`/page/1?search=${searchTerm}`);
@@ -62,6 +46,10 @@ const MainPage = (): JSX.Element => {
     navigate(`/page/${page}?search=${search}`);
   };
 
+  const handleRefresh = (): void => {
+    dispatch(characterApi.util.invalidateTags(['Characters']));
+  };
+
   if (shouldThrow) {
     throw new Error('Test error!');
   }
@@ -71,14 +59,17 @@ const MainPage = (): JSX.Element => {
       <h1 className={styles.app__title}>Rick and Morty Characters</h1>
       <section className={styles.search_section}>
         <Search onSearch={handleSearch} />
+        <button className={styles.refresh_button} onClick={handleRefresh}>
+          Refresh
+        </button>
       </section>
 
       <div className={detailsId ? styles.split_layout : ''}>
         <section className={styles.results_section}>
           <CardList
             characters={characters}
-            isLoading={isLoading}
-            error={error}
+            isLoading={isLoading || isFetching}
+            error={errorMessage}
             onCardClick={handleCardClick}
           />
         </section>
