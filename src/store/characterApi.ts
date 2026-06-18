@@ -27,10 +27,13 @@ export const characterApi = createApi({
   tagTypes: ['Characters', 'Character'],
   endpoints: (builder) => ({
     getCharacters: builder.query<GetCharactersResult, GetCharactersArgs>({
-      query: ({ search, page }) =>
-        search
-          ? `/character?name=${search.toLowerCase()}&page=${page}`
-          : `/character?page=${page}`,
+      query: ({ search, page }) => ({
+        url: '/character',
+        params: {
+          page,
+          ...(search ? { name: search.toLowerCase() } : {}),
+        },
+      }),
       transformResponse: (response: CharacterListResponse) => ({
         characters: response.results,
         totalPages: response.info.pages,
