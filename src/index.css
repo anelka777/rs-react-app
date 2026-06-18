@@ -4,9 +4,28 @@
   padding: 0;
 }
 
+:root[data-theme='dark'] {
+  --bg-primary: #1a1f2e;
+  --bg-card: #1a1f2e;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --border-color: rgba(255, 255, 255, 0.2);
+  --accent: rgb(62, 169, 188);
+}
+
+:root[data-theme='light'] {
+  --bg-primary: #f3f4f6;
+  --bg-card: #ffffff;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --border-color: rgba(0, 0, 0, 0.15);
+  --accent: rgb(62, 169, 188);
+}
+
+
 body {
   font-family: sans-serif;
-  background: #1a1f2e;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   padding: 20px;
 }

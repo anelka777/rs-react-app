@@ -6,8 +6,11 @@
 
 .header {
     padding: 12px 24px;
-    background-color: #1a1a2e;
-    border-bottom: 1px solid #333;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .nav {
@@ -16,7 +19,7 @@
 }
 
 .nav__link {
-    color: #a0a0b0;
+    color: var(--text-secondary);
     text-decoration: none;
     font-size: 16px;
     padding: 4px 8px;
@@ -25,15 +28,20 @@
 }
 
 .nav__link:hover {
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .nav__link.active {
-    color: #ffffff;
+    color: var(--text-primary);
     font-weight: 600;
 }
 
-.main {
-    flex: 1;
-    padding: 0;
+.theme__toggle {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
 }

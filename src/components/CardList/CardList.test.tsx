@@ -1,12 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 import mockCharacters from '../../test-utils/mockData';
+import renderWithProviders from '../../test-utils/renderWithProviders';
 
 import CardList from './CardList';
 
 describe('CardList', () => {
   it('shows spinner when loading', () => {
-    const { container } = render(
+    const { container } = renderWithProviders(
       <CardList
         characters={[]}
         isLoading={true}
@@ -16,8 +17,9 @@ describe('CardList', () => {
     );
     expect(container.firstChild).toBeInTheDocument();
   });
+
   it('renders correct number of cards', () => {
-    render(
+    renderWithProviders(
       <CardList
         characters={mockCharacters}
         isLoading={false}
@@ -27,8 +29,9 @@ describe('CardList', () => {
     );
     expect(screen.getAllByRole('img')).toHaveLength(2);
   });
+
   it('shows 404 error message', () => {
-    render(
+    renderWithProviders(
       <CardList
         characters={[]}
         isLoading={false}
@@ -40,8 +43,9 @@ describe('CardList', () => {
       screen.getByText('Character not found. Try another name!')
     ).toBeInTheDocument();
   });
+
   it('shows 400 error message', () => {
-    render(
+    renderWithProviders(
       <CardList
         characters={[]}
         isLoading={false}
@@ -55,7 +59,7 @@ describe('CardList', () => {
   });
 
   it('shows 5xx error message', () => {
-    render(
+    renderWithProviders(
       <CardList
         characters={[]}
         isLoading={false}

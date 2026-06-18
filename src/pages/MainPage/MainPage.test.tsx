@@ -1,10 +1,13 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
+import { Provider } from 'react-redux';
 
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
 import { fetchCharacters } from '../../api/character';
 import { mockFetchResult } from '../../test-utils/mockData';
 import CharacterDetail from '../CharacterDetail/CharacterDetail';
+import { store } from '../../store/store';
+import ThemeProvider from '../../context/ThemeProvider';
 
 import MainPage from './MainPage';
 
@@ -25,7 +28,13 @@ const renderMainPage = (path = '/page/1'): ReturnType<typeof render> => {
     ],
     { initialEntries: [path] }
   );
-  return render(<RouterProvider router={router} />);
+  return render(
+    <Provider store={store}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </Provider>
+  );
 };
 
 beforeEach(() => {
