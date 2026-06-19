@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, type JSX } from 'react';
 
 import { ThemeContext, type Theme } from './ThemeContext';
@@ -7,9 +9,12 @@ const ThemeProvider = ({
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem('theme') as Theme) || 'dark'
-  );
+  const [theme, setTheme] = useState<Theme>('dark');
+
+  useEffect(() => {
+    const stored = (localStorage.getItem('theme') as Theme) || 'dark';
+    setTheme(stored);
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);

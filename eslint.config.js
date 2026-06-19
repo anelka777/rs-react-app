@@ -80,6 +80,9 @@ export default defineConfig([
 
       // Architecture
       'max-lines-per-function': ['warn', { max: 50 }],
+
+      // localStorage initialization must happen in useEffect for SSR compatibility
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 ]);
