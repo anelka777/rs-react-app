@@ -1,3 +1,5 @@
+'use client';
+
 import type { JSX } from 'react';
 
 import type { Character } from '../../types/character';
