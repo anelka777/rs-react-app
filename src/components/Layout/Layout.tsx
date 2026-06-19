@@ -1,45 +1,53 @@
+'use client';
+
 import { type JSX } from 'react';
-import { Outlet, NavLink } from 'react-router';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
 
 import Flyout from '../Flyout/Flyout';
 import useTheme from '../../hooks/useTheme';
 
 import styles from './Layout.module.css';
 
-const Layout = (): JSX.Element => {
+const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const { theme, toggleTheme } = useTheme();
+  const t = useTranslations('nav');
+  const tTheme = useTranslations('theme');
+  const locale = useLocale();
+  const pathname = usePathname();
+
+  const isActive = (href: string): boolean => pathname === href;
+
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive
-                ? `${styles.nav__link} ${styles.active}`
-                : styles.nav__link
-            }
+          <Link
+            href={`/${locale}`}
+            className={`${styles.nav__link} ${isActive(`/${locale}`) ? styles.active : ''}`}
           >
-            Home
-          </NavLink>
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              isActive
-                ? `${styles.nav__link} ${styles.active}`
-                : styles.nav__link
-            }
+            {t('home')}
+          </Link>
+          <Link
+            href={`/${locale}/about`}
+            className={`${styles.nav__link} ${isActive(`/${locale}/about`) ? styles.active : ''}`}
           >
-            About
-          </NavLink>
+            {t('about')}
+          </Link>
         </nav>
-        <button className={styles.theme__toggle} onClick={toggleTheme}>
-          {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
-        </button>
+        <div className={styles.controls}>
+          <button className={styles.theme__toggle} onClick={toggleTheme}>
+            {theme === 'dark' ? tTheme('light') : tTheme('dark')}
+          </button>
+          <div className={styles.lang__switcher}>
+            <Link href={pathname.replace(`/${locale}`, '/en')}>EN</Link>
+            {' | '}
+            <Link href={pathname.replace(`/${locale}`, '/ru')}>RU</Link>
+          </div>
+        </div>
       </header>
-      <main>
-        <Outlet />
-      </main>
+      <main>{children}</main>
       <Flyout />
     </div>
   );

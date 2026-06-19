@@ -1,0 +1,39 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About"
+  },
+  "theme": {
+    "light": "☀️ Light",
+    "dark": "🌙 Dark"
+  },
+  "search": {
+    "title": "Rick and Morty Characters",
+    "placeholder": "Search...",
+    "button": "Search",
+    "refresh": "Refresh",
+    "error": "Something went wrong. Please try again.",
+    "simulateError": "Simulate Error"
+  },
+  "about": {
+    "title": "About",
+    "author": "Author: Alena Danilchenko",
+    "description": "This app was built as part of the",
+    "course": "RS School React Course",
+    "back": "← Back to Home"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Page not found",
+    "back": "← Back to Home"
+  },
+  "detail": {
+    "status": "Status",
+    "species": "Species",
+    "gender": "Gender",
+    "location": "Location",
+    "episodes": "Episodes",
+    "noCharacter": "No character found",
+    "error": "Error"
+  }
+}
