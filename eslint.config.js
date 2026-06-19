@@ -1,7 +1,6 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
 import reactPlugin from 'eslint-plugin-react';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import tseslint from 'typescript-eslint';
@@ -9,14 +8,13 @@ import importPlugin from 'eslint-plugin-import';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'coverage']),
+  globalIgnores(['dist', 'node_modules', 'coverage', '.next']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
       reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
       reactPlugin.configs.flat.recommended,
       reactPlugin.configs.flat['jsx-runtime'],
       eslintConfigPrettier,
@@ -28,7 +26,7 @@ export default defineConfig([
       ecmaVersion: 'latest',
       globals: globals.browser,
       parserOptions: {
-        project: ['./tsconfig.app.json', './tsconfig.node.json'],
+        project: ['./tsconfig.json'],
       },
     },
     settings: {
