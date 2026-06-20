@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 
 import type { Character } from '../../types/character';
-import Search from '../../components/Search/Search';
+import SearchForm from '../../components/SearchForm/SearchForm';
 import CardList from '../../components/CardList/CardList';
 import Pagination from '../../components/Pagination/Pagination';
 
@@ -37,10 +37,6 @@ const MainPageClient = ({
   const t = useTranslations('search');
   const [shouldThrow, setShouldThrow] = useState<boolean>(false);
 
-  const handleSearch = (searchTerm: string): void => {
-    router.push(`/${locale}?page=1&search=${searchTerm}`);
-  };
-
   const handleCardClick = (id: number): void => {
     router.push(`/${locale}?page=${page}&search=${search}&details=${id}`);
   };
@@ -61,7 +57,7 @@ const MainPageClient = ({
     <div className={styles.app}>
       <h1 className={styles.app__title}>{t('title')}</h1>
       <section className={styles.search_section}>
-        <Search onSearch={handleSearch} />
+        <SearchForm initialValue={search} />
         <button className={styles.refresh_button} onClick={handleRefresh}>
           {t('refresh')}
         </button>

@@ -3,7 +3,6 @@ import { getTranslations } from 'next-intl/server';
 
 import MainPageClient from '../../pages/MainPage/MainPage.client';
 import CharacterDetailServer from '../../pages/CharacterDetail/CharacterDetail.server';
-import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
 
 interface HomeProps {
   searchParams: Promise<{ search?: string; page?: string; details?: string }>;
@@ -26,17 +25,15 @@ export default async function Home({
   const error = !res.ok ? t('error') : null;
 
   return (
-    <ErrorBoundary>
-      <MainPageClient
-        characters={characters}
-        totalPages={totalPages}
-        error={error}
-        page={pageNum}
-        search={search}
-        detailsId={details}
-      >
-        {details && <CharacterDetailServer id={details} />}
-      </MainPageClient>
-    </ErrorBoundary>
+    <MainPageClient
+      characters={characters}
+      totalPages={totalPages}
+      error={error}
+      page={pageNum}
+      search={search}
+      detailsId={details}
+    >
+      {details && <CharacterDetailServer id={details} />}
+    </MainPageClient>
   );
 }
