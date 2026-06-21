@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
 
-import styles from '../pages/NotFoundPage/NotFoundPage.module.css';
+import styles from './not-found.module.css';
 
 export default function NotFound(): JSX.Element {
   return (
