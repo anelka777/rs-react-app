@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
-import styles from '../../../pages/AboutPage/AboutPage.module.css';
+import styles from './about.module.css';
 
 const AboutPage = async (): Promise<JSX.Element> => {
   const t = await getTranslations('about');

@@ -2,7 +2,6 @@ import { type JSX } from 'react';
 import { render } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router';
 import { configureStore } from '@reduxjs/toolkit';
 
 import { characterApi } from '../store/characterApi';
@@ -24,19 +23,13 @@ export const createTestStore = (): StoreType =>
 
 const renderWithProviders = (
   ui: JSX.Element,
-  options?: RenderOptions & { initialEntries?: string[]; store?: StoreType }
+  options?: RenderOptions & { store?: StoreType }
 ): ReturnType<typeof render> => {
-  const {
-    initialEntries = ['/'],
-    store = createTestStore(),
-    ...rest
-  } = options ?? {};
+  const { store = createTestStore(), ...rest } = options ?? {};
 
   return render(
     <Provider store={store}>
-      <ThemeProvider>
-        <MemoryRouter initialEntries={initialEntries}>{ui}</MemoryRouter>
-      </ThemeProvider>
+      <ThemeProvider>{ui}</ThemeProvider>
     </Provider>,
     rest
   );
