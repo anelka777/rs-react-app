@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import Image from 'next/image';
 
 import useCharacterDetail from '../../hooks/useCharacterDetail';
 import Spinner from '../../components/Spinner/Spinner';
@@ -20,9 +21,11 @@ const CharacterDetail = (): JSX.Element => {
 
   return (
     <div className={styles.detail}>
-      <img
+      <Image
         src={character.image}
         alt={character.name}
+        width={150}
+        height={150}
         className={styles.image}
       />
       <h2 className={styles.name}>{character.name}</h2>

@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
 
 import type { CharacterDetail } from '../../types/character';
 
@@ -27,9 +28,11 @@ const CharacterDetailServer = async ({
 
   return (
     <div className={styles.detail}>
-      <img
+      <Image
         src={character.image}
         alt={character.name}
+        width={150}
+        height={150}
         className={styles.image}
       />
       <h2 className={styles.name}>{character.name}</h2>
