@@ -3,10 +3,11 @@
 import type { JSX } from 'react';
 import Image from 'next/image';
 
-import type { Character } from '../../types/character';
 import useCharacterSelection from '../../hooks/useCharacterSelection';
 
 import styles from './Card.module.css';
+
+import type { Character } from '@/types/character';
 
 interface CardProps {
   character: Character;
