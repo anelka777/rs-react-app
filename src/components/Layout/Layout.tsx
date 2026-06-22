@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 
 import Flyout from '../Flyout/Flyout';
 import useTheme from '../../hooks/useTheme';
-import { Link, usePathname } from '../../i18n/navigation';
+import { Link, usePathname, useRouter } from '../../i18n/navigation';
 
 import styles from './Layout.module.css';
 
@@ -14,8 +14,14 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const t = useTranslations('nav');
   const tTheme = useTranslations('theme');
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (href: string): boolean => pathname === href;
+
+  const switchLocale = (locale: 'en' | 'ru'): void => {
+    router.replace(pathname, { locale });
+    router.refresh();
+  };
 
   return (
     <div className={styles.layout}>
@@ -43,13 +49,9 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
             {theme === 'dark' ? tTheme('light') : tTheme('dark')}
           </button>
           <div className={styles.lang__switcher}>
-            <Link href={pathname} locale="en">
-              EN
-            </Link>
+            <button onClick={() => switchLocale('en')}>EN</button>
             {' | '}
-            <Link href={pathname} locale="ru">
-              RU
-            </Link>
+            <button onClick={() => switchLocale('ru')}>RU</button>
           </div>
         </div>
       </header>
