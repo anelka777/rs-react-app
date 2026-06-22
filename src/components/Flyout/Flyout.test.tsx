@@ -1,4 +1,4 @@
-import { screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 
 import renderWithProviders from '../../test-utils/renderWithProviders';
 import { store } from '../../store/store';
@@ -6,6 +6,10 @@ import { toggleCharacter, unselectAll } from '../../store/selectedSlice';
 import mockCharacters from '../../test-utils/mockData';
 
 import Flyout from './Flyout';
+
+vi.mock('../../actions/csvActions', () => ({
+  generateCsvAction: vi.fn().mockResolvedValue('name,status\nRick,Alive'),
+}));
 
 beforeEach(() => {
   store.dispatch(unselectAll());
@@ -42,7 +46,7 @@ describe('Flyout', () => {
     expect(screen.getByText('Download')).toBeInTheDocument();
   });
 
-  it('triggers download when download button clicked', () => {
+  it('triggers download when download button clicked', async () => {
     const createObjectURL = vi.fn(() => 'blob:url');
     const revokeObjectURL = vi.fn();
     globalThis.URL.createObjectURL = createObjectURL;
@@ -57,10 +61,12 @@ describe('Flyout', () => {
       anchor as unknown as HTMLElement
     );
 
-    fireEvent.click(screen.getByText('Download'));
+    await fireEvent.click(screen.getByText('Download'));
 
-    expect(createObjectURL).toHaveBeenCalled();
-    expect(clickMock).toHaveBeenCalled();
-    expect(revokeObjectURL).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(createObjectURL).toHaveBeenCalled();
+      expect(clickMock).toHaveBeenCalled();
+      expect(revokeObjectURL).toHaveBeenCalled();
+    });
   });
 });

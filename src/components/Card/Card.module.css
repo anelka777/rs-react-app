@@ -22,7 +22,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 10px rgba(62, 169, 188, 0.3);
 }
 
-.card img {
+.card__image {
   width: 100px;
   height: 100px;
 }

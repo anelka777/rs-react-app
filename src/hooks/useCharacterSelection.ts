@@ -12,7 +12,7 @@ const useCharacterSelection = (
 ): UseCharacterSelectionReturn => {
   const dispatch = useAppDispatch();
   const isSelected = useAppSelector((state) =>
-    state.selectedCharacters.items.some((c) => c.id === character.id)
+    state.selectedCharacters.items.some((c: Character) => c.id === character.id)
   );
 
   const handleCheckbox = (): void => {

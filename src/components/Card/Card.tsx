@@ -1,9 +1,13 @@
-import type { JSX } from 'react';
+'use client';
 
-import type { Character } from '../../types/character';
+import type { JSX } from 'react';
+import Image from 'next/image';
+
 import useCharacterSelection from '../../hooks/useCharacterSelection';
 
 import styles from './Card.module.css';
+
+import type { Character } from '@/types/character';
 
 interface CardProps {
   character: Character;
@@ -26,7 +30,13 @@ const Card = ({ character, onClick }: CardProps): JSX.Element => {
         onClick={(e) => e.stopPropagation()}
       />
 
-      <img src={character.image} alt={character.name} />
+      <Image
+        src={character.image}
+        alt={character.name}
+        width={100}
+        height={100}
+        className={styles.card__image}
+      />
       <h3>{character.name}</h3>
       <p>
         <span className={styles.card__label}>Species:</span> {character.species}

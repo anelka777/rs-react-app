@@ -1,45 +1,61 @@
+'use client';
+
 import { type JSX } from 'react';
-import { Outlet, NavLink } from 'react-router';
+import { useTranslations } from 'next-intl';
 
 import Flyout from '../Flyout/Flyout';
 import useTheme from '../../hooks/useTheme';
+import { Link, usePathname, useRouter } from '../../i18n/navigation';
 
 import styles from './Layout.module.css';
 
-const Layout = (): JSX.Element => {
+const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const { theme, toggleTheme } = useTheme();
+  const t = useTranslations('nav');
+  const tTheme = useTranslations('theme');
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const isActive = (href: string): boolean => pathname === href;
+
+  const switchLocale = (locale: 'en' | 'ru'): void => {
+    router.replace(pathname, { locale });
+    router.refresh();
+  };
+
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive
-                ? `${styles.nav__link} ${styles.active}`
-                : styles.nav__link
-            }
+          <Link
+            href="/"
+            className={`${styles.nav__link} ${isActive('/') ? styles.active : ''}`}
           >
-            Home
-          </NavLink>
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              isActive
-                ? `${styles.nav__link} ${styles.active}`
-                : styles.nav__link
-            }
+            {t('home')}
+          </Link>
+          <Link
+            href="/about"
+            className={`${styles.nav__link} ${isActive('/about') ? styles.active : ''}`}
           >
-            About
-          </NavLink>
+            {t('about')}
+          </Link>
         </nav>
-        <button className={styles.theme__toggle} onClick={toggleTheme}>
-          {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
-        </button>
+        <div className={styles.controls}>
+          <button
+            className={styles.theme__toggle}
+            onClick={toggleTheme}
+            suppressHydrationWarning
+          >
+            {theme === 'dark' ? tTheme('light') : tTheme('dark')}
+          </button>
+          <div className={styles.lang__switcher}>
+            <button onClick={() => switchLocale('en')}>EN</button>
+            {' | '}
+            <button onClick={() => switchLocale('ru')}>RU</button>
+          </div>
+        </div>
       </header>
-      <main>
-        <Outlet />
-      </main>
+      <main>{children}</main>
       <Flyout />
     </div>
   );

@@ -45,3 +45,29 @@
     cursor: pointer;
     font-size: 14px;
 }
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.lang__switcher {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.lang__switcher a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: color 0.2s;
+}
+
+.lang__switcher a:hover {
+    color: var(--text-primary);
+}
