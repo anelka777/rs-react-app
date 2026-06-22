@@ -35,15 +35,19 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
           </Link>
         </nav>
         <div className={styles.controls}>
-          <button className={styles.theme__toggle} onClick={toggleTheme}>
+          <button
+            className={styles.theme__toggle}
+            onClick={toggleTheme}
+            suppressHydrationWarning
+          >
             {theme === 'dark' ? tTheme('light') : tTheme('dark')}
           </button>
           <div className={styles.lang__switcher}>
-            <Link href="/" locale="en">
+            <Link href={pathname} locale="en">
               EN
             </Link>
             {' | '}
-            <Link href="/" locale="ru">
+            <Link href={pathname} locale="ru">
               RU
             </Link>
           </div>
