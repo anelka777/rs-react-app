@@ -9,7 +9,12 @@ const ThemeProvider = ({
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === 'undefined') {
+      return 'dark';
+    }
+    return (localStorage.getItem('theme') as Theme) || 'dark';
+  });
 
   useEffect(() => {
     const stored = (localStorage.getItem('theme') as Theme) || 'dark';
