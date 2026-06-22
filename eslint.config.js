@@ -83,6 +83,7 @@ export default defineConfig([
 
       // localStorage initialization must happen in useEffect for SSR compatibility
       'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/refs': 'warn',
     },
   },
 ]);

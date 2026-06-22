@@ -1,8 +1,11 @@
 import type { JSX } from 'react';
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
 import styles from './about.module.css';
+
+import { Link } from '@/i18n/navigation';
+
+export const dynamic = 'force-static';
 
 const AboutPage = async (): Promise<JSX.Element> => {
   const t = await getTranslations('about');

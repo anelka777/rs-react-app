@@ -3,8 +3,7 @@
 import type { JSX } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 import type { Character } from '../../types/character';
 import SearchForm from '../../components/SearchForm/SearchForm';

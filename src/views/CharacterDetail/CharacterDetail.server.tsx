@@ -15,7 +15,9 @@ const CharacterDetailServer = async ({
 }: CharacterDetailServerProps): Promise<JSX.Element> => {
   const t = await getTranslations('detail');
 
-  const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+  const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`, {
+    next: { revalidate: 60 },
+  });
   const character: CharacterDetail = await res.json();
 
   if (!res.ok) {

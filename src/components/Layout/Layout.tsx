@@ -1,12 +1,11 @@
 'use client';
 
 import { type JSX } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 import Flyout from '../Flyout/Flyout';
 import useTheme from '../../hooks/useTheme';
+import { Link, usePathname } from '../../i18n/navigation';
 
 import styles from './Layout.module.css';
 
@@ -14,7 +13,6 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const { theme, toggleTheme } = useTheme();
   const t = useTranslations('nav');
   const tTheme = useTranslations('theme');
-  const locale = useLocale();
   const pathname = usePathname();
 
   const isActive = (href: string): boolean => pathname === href;
@@ -24,14 +22,14 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
       <header className={styles.header}>
         <nav className={styles.nav}>
           <Link
-            href={`/${locale}`}
-            className={`${styles.nav__link} ${isActive(`/${locale}`) ? styles.active : ''}`}
+            href="/"
+            className={`${styles.nav__link} ${isActive('/') ? styles.active : ''}`}
           >
             {t('home')}
           </Link>
           <Link
-            href={`/${locale}/about`}
-            className={`${styles.nav__link} ${isActive(`/${locale}/about`) ? styles.active : ''}`}
+            href="/about"
+            className={`${styles.nav__link} ${isActive('/about') ? styles.active : ''}`}
           >
             {t('about')}
           </Link>
@@ -41,9 +39,13 @@ const Layout = ({ children }: { children: React.ReactNode }): JSX.Element => {
             {theme === 'dark' ? tTheme('light') : tTheme('dark')}
           </button>
           <div className={styles.lang__switcher}>
-            <Link href={pathname.replace(`/${locale}`, '/en')}>EN</Link>
+            <Link href="/" locale="en">
+              EN
+            </Link>
             {' | '}
-            <Link href={pathname.replace(`/${locale}`, '/ru')}>RU</Link>
+            <Link href="/" locale="ru">
+              RU
+            </Link>
           </div>
         </div>
       </header>
